@@ -8,6 +8,7 @@ class MyNewtonSolver():
 
     Depending on the value of `solver_type`, 
     an instance of one of the following Newton solver classes is returned:
+
     - "simplDamp" : MyNewton_simplDamp
     - "adaptDamp" : MyNewton_adaptDamp (with fixed tau=0.5)
     - "ord"       : MyNewton_ord
@@ -34,6 +35,7 @@ class MyNewtonSolver():
 
         Depending on the value of `solver_type`, 
         an instance of one of the following Newton solver classes is returned:
+        
         - "simplDamp" : MyNewton_simplDamp
         - "adaptDamp" : MyNewton_adaptDamp (with fixed tau=0.5)
         - "ord"       : MyNewton_ord
