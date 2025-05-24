@@ -4,5 +4,5 @@ __pycache__/
 test_NS/
 test_MOR/
 
-docs/_build
+#docs/_build
 
