@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rb_semilinear &mdash; rb_semilinear 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reduced Nonlinear Problem class" href="rb_semilinear/rb_nl_problem.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            rb_semilinear
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html">Reduced Nonlinear Problem class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/sl_problems.html">Semilinear Problem classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_m.html">Methods for Reduced Basis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/nl_solver.html">Newton Solver Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/my_plots.html">Functions for various visualizations</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">rb_semilinear</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">rb_semilinear</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rb-semilinear">
+<h1>rb_semilinear<a class="headerlink" href="#rb-semilinear" title="Link to this heading"></a></h1>
+<section id="requirements">
+<h2>🔧 Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>This project uses <a class="reference external" href="https://fenicsproject.org/">FEniCS</a>, so please make sure it is installed correctly before running any scripts.</p>
+<blockquote>
+<div><p>Note:
+FEniCS runs natively on <strong>Linux</strong>.
+If you’re using <strong>Windows</strong>, you must install and use the <strong>Windows Subsystem for Linux (WSL)</strong>.
+👉 See the official WSL installation guide: https://docs.microsoft.com/en-us/windows/wsl/install</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="installing-fenics">
+<h2>Installing FEniCS<a class="headerlink" href="#installing-fenics" title="Link to this heading"></a></h2>
+<p>The following instructions are copied from https://fenicsproject.org/download/archive/.</p>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<p>To install FEniCS on Windows, use <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a> and install the Ubuntu distribution. Then follow the instructions
+for Ubuntu.</p>
+</section>
+<section id="ubuntu">
+<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Link to this heading"></a></h3>
+<p>To install FEniCS on Ubuntu, run the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>software-properties-common
+sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>ppa:fenics-packages/fenics
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>fenics
+</pre></div>
+</div>
+</section>
+<section id="anaconda">
+<h3>Anaconda<a class="headerlink" href="#anaconda" title="Link to this heading"></a></h3>
+<p>Th use the prebuilt Anaconda Python package, run following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>fenics_env<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>fenics
+conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-test-ns-py-script">
+<h2>Running the <code class="docutils literal notranslate"><span class="pre">test_NS.py</span></code> Script<a class="headerlink" href="#running-the-test-ns-py-script" title="Link to this heading"></a></h2>
+<p>To run the <code class="docutils literal notranslate"><span class="pre">test_NS.py</span></code> script:</p>
+<ol class="arabic">
+<li><p><strong>Activate your Conda environment (If Anaconda was used for installing)</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
+</pre></div>
+</div>
+</li>
+<li><p><strong>Run the script</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>./test_NS.py
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html">Reduced Nonlinear Problem class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html#rb_semilinear.rb_nl_problem.MyRedNonlinearProblem"><code class="docutils literal notranslate"><span class="pre">MyRedNonlinearProblem</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/sl_problems.html">Semilinear Problem classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher"><code class="docutils literal notranslate"><span class="pre">Fisher</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher_mms"><code class="docutils literal notranslate"><span class="pre">Fisher_mms</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.MySemilinearProblem"><code class="docutils literal notranslate"><span class="pre">MySemilinearProblem</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Poisson"><code class="docutils literal notranslate"><span class="pre">Poisson</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.SemilinearPoisson"><code class="docutils literal notranslate"><span class="pre">SemilinearPoisson</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_m.html">Methods for Reduced Basis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.pod.comp_POD"><code class="docutils literal notranslate"><span class="pre">comp_POD()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.greedy.comp_greedyRB"><code class="docutils literal notranslate"><span class="pre">comp_greedyRB()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.find_Bl"><code class="docutils literal notranslate"><span class="pre">find_Bl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.greedy_htype"><code class="docutils literal notranslate"><span class="pre">greedy_htype()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.plot_mu_trained"><code class="docutils literal notranslate"><span class="pre">plot_mu_trained()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.parameter.get_P"><code class="docutils literal notranslate"><span class="pre">get_P()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.comp_S"><code class="docutils literal notranslate"><span class="pre">comp_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.get_S"><code class="docutils literal notranslate"><span class="pre">get_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.load_S"><code class="docutils literal notranslate"><span class="pre">load_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.plot_S"><code class="docutils literal notranslate"><span class="pre">plot_S()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/nl_solver.html">Newton Solver Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_simplDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_adaptDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_nleqerr"><code class="docutils literal notranslate"><span class="pre">MyNewton_nleqerr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_ord"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewtonSolver"><code class="docutils literal notranslate"><span class="pre">MyNewtonSolver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/my_plots.html">Functions for various visualizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.myPlot.myPlot"><code class="docutils literal notranslate"><span class="pre">myPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.convMap.convMap"><code class="docutils literal notranslate"><span class="pre">convMap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.errPlot.errPlot"><code class="docutils literal notranslate"><span class="pre">errPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.errRedSols.errRedSolsPlot"><code class="docutils literal notranslate"><span class="pre">errRedSolsPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.muTrainedPlot.plot_mu_trained"><code class="docutils literal notranslate"><span class="pre">plot_mu_trained()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rb_semilinear/rb_nl_problem.html" class="btn btn-neutral float-right" title="Reduced Nonlinear Problem class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, hangi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

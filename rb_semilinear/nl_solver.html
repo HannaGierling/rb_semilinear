@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newton Solver Classes &mdash; rb_semilinear 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions for various visualizations" href="my_plots.html" />
+    <link rel="prev" title="Methods for Reduced Basis" href="rb_m.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rb_semilinear
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="rb_nl_problem.html">Reduced Nonlinear Problem class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sl_problems.html">Semilinear Problem classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_m.html">Methods for Reduced Basis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Newton Solver Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_simplDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.solInfo"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp.solInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.NitInfos"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp.NitInfos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.lam_fail"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp.lam_fail</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.update_solution"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp.update_solution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.tau"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp.tau</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.solInfo"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp.solInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.NitInfos"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp.NitInfos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.lam_fail"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp.lam_fail</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.update_solution"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp.update_solution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_nleqerr"><code class="docutils literal notranslate"><span class="pre">MyNewton_nleqerr</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_nleqerr.solInfo"><code class="docutils literal notranslate"><span class="pre">MyNewton_nleqerr.solInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_nleqerr.NitInfos"><code class="docutils literal notranslate"><span class="pre">MyNewton_nleqerr.NitInfos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_ord"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_ord.solInfo"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord.solInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_ord.NitInfos"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord.NitInfos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewton_ord.update_solution"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord.update_solution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.nl_solver.MyNewtonSolver"><code class="docutils literal notranslate"><span class="pre">MyNewtonSolver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="my_plots.html">Functions for various visualizations</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rb_semilinear</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Newton Solver Classes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rb_semilinear/nl_solver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="newton-solver-classes">
+<h1>Newton Solver Classes<a class="headerlink" href="#newton-solver-classes" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_simplDamp">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rb_semilinear.nl_solver.</span></span><span class="sig-name descname"><span class="pre">MyNewton_simplDamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_simplDamp" title="Link to this definition"></a></dt>
+<dd><p>Newton solver with simple damping strategy for NonlinearProblem.</p>
+<p>This class implements a damped Newton method where the update_solution step
+<cite>u &lt;- u - λ * du</cite> uses a backtracking strategy to ensure sufficient
+decrease in the Newton correction.</p>
+<p>See algorithm 1.3.2 in</p>
+<blockquote>
+<div><p>Numerik II (Einführung in die Numerische Analysis)
+by Stefan Funken, Dirk Lebiedz, Karsten Urban</p>
+</div></blockquote>
+<p>for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Absolute tolerance for Newton solver</p></li>
+<li><p><strong>maxit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum number of Newton iterations</p></li>
+<li><p><strong>report</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, the solver prints informations while solving</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_simplDamp.solInfo">
+<span class="sig-name descname"><span class="pre">solInfo</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.solInfo" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information of finial iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_simplDamp.NitInfos">
+<span class="sig-name descname"><span class="pre">NitInfos</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.NitInfos" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information at each iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_simplDamp.lam_fail">
+<span class="sig-name descname"><span class="pre">lam_fail</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.lam_fail" title="Link to this definition"></a></dt>
+<dd><p>Indicates whether damping failed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_simplDamp.update_solution">
+<span class="sig-name descname"><span class="pre">update_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">dolfin.cpp.nls.NewtonSolver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg3:</span> <span class="pre">dolfin::NonlinearProblem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg4:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_simplDamp.update_solution" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rb_semilinear.nl_solver.</span></span><span class="sig-name descname"><span class="pre">MyNewton_adaptDamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp" title="Link to this definition"></a></dt>
+<dd><p>Adaptively damped Newton solver for semilinear PDEs</p>
+<p>The damping parameter is updated in each iteration using:</p>
+<blockquote>
+<div><p>λ = min(sqrt(2 * tau / ||du||), 1.0)</p>
+</div></blockquote>
+<p>See</p>
+<blockquote>
+<div><p>AN ADAPTIVE NEWTON-METHOD BASED ON A DYNAMICAL SYSTEMS APPROACH
+by MARIO AMREIN AND THOMAS P. WIHLER</p>
+</div></blockquote>
+<p>for details</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Absolute tolerance for Newton solver</p></li>
+<li><p><strong>maxit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum number of Newton iterations</p></li>
+<li><p><strong>report</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, the solver prints informations while solving</p></li>
+<li><p><strong>tau</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – tolerance used in damping</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp.tau">
+<span class="sig-name descname"><span class="pre">tau</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.tau" title="Link to this definition"></a></dt>
+<dd><p>tolerance used in damping</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp.solInfo">
+<span class="sig-name descname"><span class="pre">solInfo</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.solInfo" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information of finial iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp.NitInfos">
+<span class="sig-name descname"><span class="pre">NitInfos</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.NitInfos" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information at each iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp.lam_fail">
+<span class="sig-name descname"><span class="pre">lam_fail</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.lam_fail" title="Link to this definition"></a></dt>
+<dd><p>Indicates whether damping failed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_adaptDamp.update_solution">
+<span class="sig-name descname"><span class="pre">update_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">dolfin.cpp.nls.NewtonSolver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg3:</span> <span class="pre">dolfin::NonlinearProblem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg4:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_adaptDamp.update_solution" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_nleqerr">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rb_semilinear.nl_solver.</span></span><span class="sig-name descname"><span class="pre">MyNewton_nleqerr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_nleqerr" title="Link to this definition"></a></dt>
+<dd><p>Newton solver using PETSc’s SNES framework with NLEQ-ERR line search.</p>
+<p>This class wraps PETSc’s <cite>SNES</cite> nonlinear solver and configures it to use
+for easily configuring solver parameters ‘absolute tolerance’,
+‘maximum_iterations’ and ‘report’.</p>
+<p>It uses PETSc’s <cite>newtonls</cite> method with a <cite>nleqerr</cite> line search strategy.</p>
+<dl class="simple">
+<dt>PETSc Documentation Reference:</dt><dd><p><a class="reference external" href="https://petsc.org/main/manualpages/SNES/SNESSetFromOptions/">https://petsc.org/main/manualpages/SNES/SNESSetFromOptions/</a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Absolute tolerance for Newton solver</p></li>
+<li><p><strong>maxit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum number of Newton iterations</p></li>
+<li><p><strong>report</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, the solver prints informations while solving</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_nleqerr.solInfo">
+<span class="sig-name descname"><span class="pre">solInfo</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_nleqerr.solInfo" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information of finial iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_nleqerr.NitInfos">
+<span class="sig-name descname"><span class="pre">NitInfos</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_nleqerr.NitInfos" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information at each iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_ord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rb_semilinear.nl_solver.</span></span><span class="sig-name descname"><span class="pre">MyNewton_ord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_ord" title="Link to this definition"></a></dt>
+<dd><p>ordinary Newton solver for NonlinearProblem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Absolute tolerance for Newton solver</p></li>
+<li><p><strong>maxit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum number of Newton iterations</p></li>
+<li><p><strong>report</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, the solver prints informations while solving</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_ord.solInfo">
+<span class="sig-name descname"><span class="pre">solInfo</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_ord.solInfo" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information of finial iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_ord.NitInfos">
+<span class="sig-name descname"><span class="pre">NitInfos</span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_ord.NitInfos" title="Link to this definition"></a></dt>
+<dd><p>Dictionary with information at each iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewton_ord.update_solution">
+<span class="sig-name descname"><span class="pre">update_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">dolfin.cpp.nls.NewtonSolver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1:</span> <span class="pre">dolfin.cpp.la.GenericVector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg3:</span> <span class="pre">dolfin::NonlinearProblem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg4:</span> <span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewton_ord.update_solution" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rb_semilinear.nl_solver.MyNewtonSolver">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rb_semilinear.nl_solver.</span></span><span class="sig-name descname"><span class="pre">MyNewtonSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.13)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'simplDamp'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'adaptDamp'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ord'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'nleqerr'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.nl_solver.MyNewtonSolver" title="Link to this definition"></a></dt>
+<dd><p>Factory class to create a NewtonSolver instance based on solver_type.</p>
+<p>Depending on the value of <cite>solver_type</cite>,
+an instance of one of the following Newton solver classes is returned:</p>
+<ul class="simple">
+<li><p>“simplDamp” : MyNewton_simplDamp</p></li>
+<li><p>“adaptDamp” : MyNewton_adaptDamp (with fixed tau=0.5)</p></li>
+<li><p>“ord”       : MyNewton_ord</p></li>
+<li><p>“nleqerr”   : MyNewton_nleqerr</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Absolute tolerance for Newton solver</p></li>
+<li><p><strong>maxit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum number of Newton iterations</p></li>
+<li><p><strong>report</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, the solver prints informations while solving</p></li>
+<li><p><strong>solver_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance of a Newton solver class corresponding to ‘solver_type’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rb_m.html" class="btn btn-neutral float-left" title="Methods for Reduced Basis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="my_plots.html" class="btn btn-neutral float-right" title="Functions for various visualizations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, hangi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
