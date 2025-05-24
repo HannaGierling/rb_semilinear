@@ -7,21 +7,27 @@ class MyNewton_adaptDamp(MyNewtonBase):
     Adaptively damped Newton solver for semilinear PDEs
 
     The damping parameter is updated in each iteration using:
+
         λ = min(sqrt(2 * tau / ||du||), 1.0)
     
     See 
+
         AN ADAPTIVE NEWTON-METHOD BASED ON A DYNAMICAL SYSTEMS APPROACH
         by MARIO AMREIN AND THOMAS P. WIHLER
+
     for details
 
     Parameters
     ----------
     tol : float
         Absolute tolerance for Newton solver
+
     maxit : int
         Maximum number of Newton iterations
+
     report : bool
         If True, the solver prints informations while solving
+
     tau : float
         tolerance used in damping
 
@@ -29,12 +35,16 @@ class MyNewton_adaptDamp(MyNewtonBase):
     ----------
     tau : float
         tolerance used in damping
+
     solInfo : dict
         Dictionary with information of finial iteration
+
     NitInfos : dict
         Dictionary with information at each iteration
+
     lam_fail : bool
         Indicates whether damping failed 
+
     """
     def __init__(self, tol, maxit=100, report=True, tau=0.5):
         MyNewtonBase.__init__(self, tol, maxit, report)

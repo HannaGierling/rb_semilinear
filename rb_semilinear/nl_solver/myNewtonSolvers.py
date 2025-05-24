@@ -1,5 +1,5 @@
 from fenics import * 
-from nl_solver import * 
+from . import * 
 from typing import Literal
 
 class MyNewtonSolver():
@@ -8,10 +8,10 @@ class MyNewtonSolver():
 
     Depending on the value of `solver_type`, 
     an instance of one of the following Newton solver classes is returned:
-      - "simplDamp" : MyNewton_simplDamp
-      - "adaptDamp" : MyNewton_adaptDamp (with fixed tau=0.5)
-      - "ord"       : MyNewton_ord
-      - "nleqerr"   : MyNewton_nleqerr
+    - "simplDamp" : MyNewton_simplDamp
+    - "adaptDamp" : MyNewton_adaptDamp (with fixed tau=0.5)
+    - "ord"       : MyNewton_ord
+    - "nleqerr"   : MyNewton_nleqerr
 
     Parameters
     ----------

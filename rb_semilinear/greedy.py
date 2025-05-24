@@ -1,5 +1,5 @@
 from fenics import * 
-from utils import *
+from .utils import *
 
 import os 
 import numpy as np

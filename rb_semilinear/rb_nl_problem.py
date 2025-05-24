@@ -3,26 +3,28 @@ from petsc4py import PETSc
 from typing import Literal
 import numpy as np
 
-from sl_problems import MySemilinearProblem
+from rb_semilinear.sl_problems import MySemilinearProblem
 
 class MyRedNonlinearProblem(NonlinearProblem):
     """
     Class for reduced elliptic nonlinear problem in one dimension
-    using reduced basis projection of a given high-fidelity semilinear, elliptic
+    using reduced basis (RB) projection of a given high-fidelity semilinear, elliptic
     problem 'hnl_problem'.
 
     Parameters
     ----------
     hnl_problem : MySemilinearProblem
-        High-fidelity nonlinear problem, providing weak forms and mesh/function space info.
+        High-fidelity nonlinear problem
 
     RB : np.ndarray
-        Reduced basis matrix of shape (n_dofs, N), where each column is a reduced basis vector.
+        RB matrix of shape (n_dofs, N), each column is a RB vector.
 
     solver : NewtonSolver|PETScSNESSolver
         A Newton solver
 
-    initGuess_strategy : Literal["P", "0.5", "0", None] - Strategy for the initial guess:
+    initGuess_strategy : Literal["P", "0.5", "0", None] 
+
+        Strategies for the initial guess:
 
         - "P":      Solves the Poisson equation (-div(D∇u) = f).
         - "0.5":    Sets 'u = 0.5' (with boundary conditions).
@@ -32,7 +34,7 @@ class MyRedNonlinearProblem(NonlinearProblem):
     Attributes
     ----------
     hnl_problem : MySemilinearProblem
-        Reference to high-fidelity semilinear problem.
+        Reference to corresponding high-fidelity semilinear problem.
 
     RB : np.ndarray
         Reduced basis matrix.

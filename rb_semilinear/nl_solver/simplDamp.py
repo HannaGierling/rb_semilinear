@@ -11,16 +11,20 @@ class MyNewton_simplDamp(MyNewtonBase):
     decrease in the Newton correction.
 
     See algorithm 1.3.2 in 
+
         Numerik II (Einführung in die Numerische Analysis) 
         by Stefan Funken, Dirk Lebiedz, Karsten Urban
+
     for details.
 
     Parameters
     ----------
     tol : float
         Absolute tolerance for Newton solver
+
     maxit : int
         Maximum number of Newton iterations
+
     report : bool
         If True, the solver prints informations while solving
 
@@ -28,8 +32,10 @@ class MyNewton_simplDamp(MyNewtonBase):
     ----------
     solInfo : dict
         Dictionary with information of finial iteration
+
     NitInfos : dict
         Dictionary with information at each iteration
+
     lam_fail : bool
         Indicates whether damping failed 
     """

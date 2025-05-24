@@ -1,10 +1,8 @@
 # rb_semilinear
 
-%This Python package is built with [FEniCS](https://fenicsproject.org/), an open-source computing platform for solving partial differential equations (PDEs) using the finite element method.
-
 ## 🔧 Requirements
 
-This project uses [FEniCS](https://fenicsproject.org/), so make sure it is installed correctly before running any scripts.
+This project uses [FEniCS](https://fenicsproject.org/), so please make sure it is installed correctly before running any scripts.
 
 > Note:  
 > FEniCS runs natively on **Linux**.  
@@ -33,8 +31,8 @@ sudo apt-get install fenics
 Th use the prebuilt Anaconda Python package, run following commands:
 
 ```bash
-conda create -n fenicsproject -c conda-forge fenics
-source activate fenicsproject
+conda create -n fenics_env -c conda-forge fenics
+conda activate fenics_env
 ```
 
 ##  Running the `test_NS.py` Script
@@ -44,7 +42,7 @@ To run the `test_NS.py` script:
 1. **Activate your Conda environment (If Anaconda was used for installing)**:
 
     ```bash
-    conda activate fenics-env
+    conda activate fenics_env
     ```
 
 2. **Run the script**:

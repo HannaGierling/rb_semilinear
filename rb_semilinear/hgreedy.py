@@ -1,8 +1,10 @@
 from fenics import * 
-from utils import float_is_in, w2file
+from .utils import float_is_in, w2file
 
-from semilinear import MySemilinearProblem
-from mor import comp_greedyRB, comp_S, get_P
+from rb_semilinear.sl_problems import MySemilinearProblem
+from rb_semilinear.greedy import comp_greedyRB
+from rb_semilinear.parameter import   get_P
+from rb_semilinear.snapshots import comp_S
 
 import os 
 import numpy as np

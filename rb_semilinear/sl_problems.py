@@ -1,7 +1,7 @@
 from fenics import * 
 from typing import Literal, Any, Callable
 
-from nl_solver import MyNewtonSolver 
+from rb_semilinear.nl_solver import MyNewtonSolver 
 
 
 class MySemilinearProblem(NonlinearProblem):
@@ -135,17 +135,18 @@ class MySemilinearProblem(NonlinearProblem):
 
         Parameters
         ----------
-        strategy : {"P", "0.5", "0", "LP", None} - specifies how to initialize 'self.u'. 
-        
+        strategy : {"P", "0.5", "0", "LP", None}
+            Strategy to initialize `self.u`.
+
             Options:
-            - "P":      Solves the Poisson equation (-div(D∇u) = f) 
-                         and uses the result as initial guess.
-            - "0.5":    Sets 'u = 0.5' (with boundary conditions).
-            - "0":      Sets 'u = 0.0' (with boundary conditions).
-            - "LP":     Solves a linearized version of the semilinear problem:
-                            -div(D∇u) - u = f
-                            and uses the result as initial guess.
-            - None:     Uses the current value of 'self.u' 
+
+                - "P": Use soluion of the Poisson equation `-div(D∇u) = f`
+                - "0.5": Sets `u = 0.5` (with boundary conditions).
+                - "0": Sets `u = 0.0` (with boundary conditions).
+                - "LP": Use solution of a linearized version of the semilinear problem
+                   `-div(D∇u) - u = f`
+                - None: Uses the current value of `self.u`.
+
         """
         if strategy == "P":
             from l_problem import LinearProblem
@@ -318,31 +319,33 @@ class MySemilinearProblem(NonlinearProblem):
     
 class Fisher(MySemilinearProblem):
     """
-    elliptic Fisher's equation
+    Elliptic Fisher's equation.
 
     This class implements the steady-state version of the Fisher equation:
+
         -div(mu * ∇u) - u(1 - u) = 0
-    
-    It is solved using 'solver' with 'initGuess_strategy'.
-    
+
+    It is solved using the provided `solver` and the `initGuess_strategy`.
+
     Parameters
     ----------
     N_h : int
-        Number of mesh intervals for spatial discretization 
+        Number of mesh intervals for spatial discretization.
     solver : NewtonSolver or PETScSNESSolver
-        Solver object used to solve the PDE
-    initGuess_strategy : {"P", "0.5", "0", "LP", None} - specifies how to initialize 'self.u'. 
+        Solver object used to solve the PDE.
+    initGuess_strategy : {"P", "0.5", "0", "LP", None}
+        Strategy to initialize `self.u`.
+
         Options:
-        - "P":      Solves the Poisson equation (-div(D∇u) = f) 
-                        and uses the result as initial guess.
-        - "0.5":    Sets 'u = 0.5' (with boundary conditions).
-        - "0":      Sets 'u = 0.0' (with boundary conditions).
-        - "LP":     Solves a linearized version of the semilinear problem:
-                        -div(D∇u) - u = f.
-                        and uses the result as initial guess.
-        - None:     Uses the current value of 'self.u' 
+
+            - "P": Use soluion of the Poisson equation `-div(D∇u) = f`
+            - "0.5": Sets `u = 0.5` (with boundary conditions).
+            - "0": Sets `u = 0.0` (with boundary conditions).
+            - "LP": Use solution of a linearized version of the semilinear problem
+              `-div(D∇u) - u = f`
+            - None: Uses the current value of `self.u`.
     """
-    def __init__(self, N_h:int, solver:NewtonSolver | PETScSNESSolver, 
+    def __init__(self, N_h:int, solver: MyNewtonSolver, 
                  initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
         q = lambda u: u*(1-u)
         u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
@@ -372,19 +375,20 @@ class Fisher_mms(MySemilinearProblem):
         Number of mesh intervals for spatial discretization 
     solver : NewtonSolver or PETScSNESSolver
         Solver object used to solve the PDE
-    strategy : {"P", "0.5", "0", "LP", None} - specifies how to initialize 'self.u'. 
+    strategy : {"P", "0.5", "0", "LP", None} 
+        Strategy to initialize `self.u`.
+
         Options:
-        - "P":      Solves the Poisson equation (-div(D∇u) = f) 
-                        and uses the result as initial guess.
-        - "0.5":    Sets 'u = 0.5' (with boundary conditions).
-        - "0":      Sets 'u = 0.0' (with boundary conditions).
-        - "LP":     Solves a linearized version of the semilinear problem:
-                        -div(D∇u) - u = f.
-                        and uses the result as initial guess.
-        - None:     Uses the current value of 'self.u' 
+
+            - "P": Use soluion of the Poisson equation `-div(D∇u) = f`
+            - "0.5": Sets `u = 0.5` (with boundary conditions).
+            - "0": Sets `u = 0.0` (with boundary conditions).
+            - "LP": Use solution of a linearized version of the semilinear problem
+               `-div(D∇u) - u = f`
+            - None: Uses the current value of `self.u`.
     """
 
-    def __init__(self, N_h:int, solver:NewtonSolver | PETScSNESSolver, 
+    def __init__(self, N_h:int, solver: MyNewtonSolver, 
                  initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
         import sympy as sp
         q = lambda u: u*(1-u)
@@ -410,11 +414,11 @@ class Fisher_mms(MySemilinearProblem):
         Returns
         -------
         dict 
-            A dictionary with error norms:
+        A dictionary with error norms:
 
-            - ||u-u_e||_L2: L2 norm 
-            - ||u_dofs-u_e_dofs||_inf: Maximum norm 
-            - |u-u_e|_H10: H1 seminorm
+        - ||u-u_e||_L2: L2 norm 
+        - ||u_dofs-u_e_dofs||_inf: Maximum norm 
+        - |u-u_e|_H10: H1 seminorm
         """
 
         # Infinity norm based on nodal values
@@ -446,20 +450,21 @@ class SemilinearPoisson(MySemilinearProblem):
     ----------
     N_h : int
         Number of mesh intervals for spatial discretization 
-    solver : NewtonSolver or PETScSNESSolver
+    solver : : MyNewtonSolver
         Solver object used to solve the PDE
-    initGuess_strategy : {"P", "0.5", "0", "LP", None} - specifies how to initialize 'self.u'. 
+    initGuess_strategy : {"P", "0.5", "0", "LP", None}
+        Strategy to initialize `self.u`.
+
         Options:
-        - "P":      Solves the Poisson equation (-div(D∇u) = f) 
-                        and uses the result as initial guess.
-        - "0.5":    Sets 'u = 0.5' (with boundary conditions).
-        - "0":      Sets 'u = 0.0' (with boundary conditions).
-        - "LP":     Solves a linearized version of the semilinear problem:
-                        -div(D∇u) - u = f.
-                        and uses the result as initial guess.
-        - None:     Uses the current value of 'self.u' 
+
+            - "P": Use soluion of the Poisson equation `-div(D∇u) = f`
+            - "0.5": Sets `u = 0.5` (with boundary conditions).
+            - "0": Sets `u = 0.0` (with boundary conditions).
+            - "LP": Use solution of a linearized version of the semilinear problem
+              `-div(D∇u) - u = f`
+            - None: Uses the current value of `self.u`.
     """
-    def __init__(self, N_h:int, solver:NewtonSolver | PETScSNESSolver, 
+    def __init__(self, N_h:int, solver: MyNewtonSolver, 
                  initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
         q = lambda u: -u*u*u
         self.u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
@@ -476,23 +481,12 @@ class Poisson(MySemilinearProblem):
     ----------
     N_h : int
         Number of mesh intervals for spatial discretization 
-    solver : NewtonSolver or PETScSNESSolver
+    solver : : MyNewtonSolver
         Solver object used to solve the PDE
-    initGuess_strategy : {"P", "0.5", "0", "LP", None} - specifies how to initialize 'self.u'. 
-        Options:
-        - "P":      Solves the Poisson equation (-div(D∇u) = f) 
-                        and uses the result as initial guess.
-        - "0.5":    Sets 'u = 0.5' (with boundary conditions).
-        - "0":      Sets 'u = 0.0' (with boundary conditions).
-        - "LP":     Solves a linearized version of the semilinear problem:
-                        -div(D∇u) - u = f.
-                        and uses the result as initial guess.
-        - None:     Uses the current value of 'self.u' 
     """
-    def __init__(self, N_h:int, solver:NewtonSolver | PETScSNESSolver, 
-                 initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
+    def __init__(self, N_h:int, solver: MyNewtonSolver  ):
         q = lambda u:Expression("0", degree=0) 
         self.u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
         MySemilinearProblem.__init__(self,N_h, q, Expression("0", degree=0), 
-                                     self.u_D, solver, initGuess_strategy)
+                                     self.u_D, solver, None)
  

@@ -1,7 +1,7 @@
 from fenics import *
 
-from utils import *
-from semilinear import MySemilinearProblem
+from .utils import *
+from rb_semilinear.sl_problems import MySemilinearProblem
 
 import pandas as pd
 import numpy as np

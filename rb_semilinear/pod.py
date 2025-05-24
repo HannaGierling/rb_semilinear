@@ -1,5 +1,5 @@
 from fenics import *
-from utils import str2pathstr
+from .utils import str2pathstr
 
 import numpy as np
 

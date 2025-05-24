@@ -1,7 +1,12 @@
-from utils import *
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+
+def _float_is_in(val:float, lst:list[float], tol:float=1e-9):
+    for x in lst:
+        if abs(x-val) < tol:
+            return True
+    return False
 
 def _filter_Mus(Mus_wanted:list[float], Mus_all:list[float], 
                convergence_flags:list[int], converged_only:bool):
@@ -35,7 +40,7 @@ def _filter_Mus(Mus_wanted:list[float], Mus_all:list[float],
     convsflags_found = []
 
     for id, mu in enumerate(Mus_all):
-        if not float_is_in(mu, Mus_wanted):
+        if not _float_is_in(mu, Mus_wanted):
             continue
 
         converged = int(convergence_flags[id])
