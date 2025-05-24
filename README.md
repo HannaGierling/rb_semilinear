@@ -48,6 +48,6 @@ To run the `test_NS.py` script:
 2. **Run the script**:
 
     ```bash
-    python3 test_NS.py
+    python3 ./test_NS.py
     ```
 

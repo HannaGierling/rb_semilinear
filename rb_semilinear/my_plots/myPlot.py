@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 def _float_is_in(val:float, lst:list[float], tol:float=1e-9):
     for x in lst:

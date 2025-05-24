@@ -6,6 +6,7 @@ build:
     python: "3.13"
 
 python:
+  import_path: rb_semilinear
   install:
     - requirements: docs/requirements.txt
 

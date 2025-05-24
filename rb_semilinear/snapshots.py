@@ -116,7 +116,7 @@ def comp_S(problem:MySemilinearProblem,
         np.savetxt(f"{folder}/S_{problem.N_h}.csv",S, delimiter=',', fmt='%.12e')
         np.savetxt(f"{folder}/x_{problem.N_h}.csv",x, delimiter=',', fmt='%.12e')
         np.savetxt(f"{folder}/P_train.csv",P_train, delimiter=',', fmt='%.12e')
-        from my_plots import myPlot, convMap
+        from rb_semilinear.my_plots import myPlot, convMap
         df = pd.DataFrame(mapping, index=None); df['t'] = df.axes[0]
         df = df.astype({'nit': 'int32', 'converged': 'int32', 'N': 'int32'})
         if not isinstance(problem.solver, PETScSNESSolver):

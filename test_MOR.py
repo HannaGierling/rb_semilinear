@@ -67,7 +67,7 @@ only_hf = False
 ################################################################################
 
 folder = str2pathstr(f"{os.path.dirname(__file__)}"+\
-         f"/test_MOR/{test_problem}/Nh_{N_h}/{hf_initGuess_opt}_{solver_opt}/"+\
+         f"test_MOR/{test_problem}/Nh_{N_h}/{hf_initGuess_opt}_{solver_opt}/"+\
          f"Ptrain_{P_train_opt}{P_train_ns}\
               {'random' if P_train_random==True else ''}")
 
@@ -115,7 +115,7 @@ if only_hf == False:
         raise Exception(f"Option '{RB_opt}' for RB generation not implemented!")
 
     solving_folder = f"{rb_folder}/{str2pathstr(rb_initGuess_opt)}_{P_test_opt}\
-                       {P_test_ns}{"random" if P_test_random==True else ""}"
+                       {P_test_ns}{'random' if P_test_random==True else ''}"
 
 # --- define reduced problem --- #
     rb_solver = MyNewtonSolver(rb_Rtol, rb_maxit, True, "nleqerr")
@@ -192,7 +192,7 @@ if only_hf == False:
 
     # --- plot errors of reduced solutions --- #
     csvfile =f"{solving_folder}/err_{P_test_opt}{P_test_ns}.csv"
-    errRedSolsPlot(solving_folder, csvfile, df, 
+    errRedSolsPlot(solving_folder, csvfile,  
                     P_train_opt if P_test_opt == "P_train" else P_test_opt,
                     plot = True)
 
