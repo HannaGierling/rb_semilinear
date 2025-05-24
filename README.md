@@ -1,5 +1,7 @@
 # rb_semilinear
 
+📘 [Dokumentation ansehen](https://<username>.github.io/<repo-name>/)
+
 ## 🔧 Requirements
 
 This project uses [FEniCS](https://fenicsproject.org/), so please make sure it is installed correctly before running any scripts.
