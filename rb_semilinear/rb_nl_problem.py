@@ -78,13 +78,16 @@ class MyRedNonlinearProblem(NonlinearProblem):
         self.solver = solver
         self.initGuess_strategy = initGuess_strategy
 
-        # --- utils...tmp ---
+        # --- proj_norm --- #
+
+
+        # --- utils...tmp --- #
         V_N = FunctionSpace(IntervalMesh(RB.shape[1]-1,0,1),"P",1)
         self._L = inner(TrialFunction(V_N), TestFunction(V_N))*dx
         self._u_func = Function(V_N)
     
-    def errornorms(self, u_h:Function|None, 
-                    proj_norm:Literal["L2-norm", "2-norm"]):
+    def errornorms(self, u_h:Function|None):
+                   # proj_norm:Literal["L2-norm", "2-norm"]):
         """
         Compute error norms between high-fidelity solution 'u_h' and current 
         reduced solution 'self.u_N()' and between 'u_h' and its projection
@@ -106,20 +109,24 @@ class MyRedNonlinearProblem(NonlinearProblem):
             - "||u_h-P_N(u_h)||_L2": L2 norm of 'u_h' and its projection.
 
         """
+        if self.proj_norm == None:
+            raise Exception("You have to set 'MyRedNonlinearProblem.proj_norm' to either '2-norm' or 'L2-norm' first!")
 
         if u_h == None: # e.g. if hf-problem did not converge
             return {"||u_h-u_N||_L2"              : -1.0,
                     "||u_h-P_N(u_h)||_L2"         : -1.0}
 
-        if proj_norm not in {"L2-norm", "2-norm"}:
-            raise Exception(f"Projection w.r.t. {proj_norm} not implemented!")
+        if self.proj_norm not in {"L2-norm", "2-norm"}:
+            raise Exception(f"Projection w.r.t. {self.proj_norm} not implemented!")
 
         dx_q = dx(metadata={'quadrature_degree':9})
 
-        P_u_h = self.proj(u_h, proj_norm=proj_norm)
+        P_u_h = self.proj(u_h, proj_norm=self.proj_norm)
 
         errL2 = assemble((self.u_N()-u_h)**2*dx_q)**0.5                     # same as errornorm(self.u_N(), u_h)
         PerrL2 = assemble((u_h-P_u_h)**2*dx_q)**0.5                         # same as errornorm(u_h, P_u_h)
+        #errL2 = norm(self.u_N().vector()-u_h.vector())
+        #PerrL2 = norm(P_u_h.vector() - u_h.vector())
 
         errors = {"||u_h-u_N||_L2"              : errL2,
                   "||u_h-P_N(u_h)||_L2"         : PerrL2}
@@ -162,8 +169,8 @@ class MyRedNonlinearProblem(NonlinearProblem):
         return self.comp_u_N(self.u_rbc)
 
     def set_initGuess_rbc(self, 
-                          initGuess_strategy:Literal["P", "0.5", "0", None],
-                          proj_norm:Literal["L2-norm", "2-norm"]="L2-norm"):
+                          initGuess_strategy:Literal["P", "0.5", "0", None]):
+                          #proj_norm:Literal["L2-norm", "2-norm"]="L2-norm"):
         """
         Set initial guess for reduced basis coefficients 'self.rbc'
         based on given strategy 'initGuess_strategy'.
@@ -184,11 +191,13 @@ class MyRedNonlinearProblem(NonlinearProblem):
             Type of norm used for projection. 
         
         """
+        if self.proj_norm == None:
+            raise Exception("You have to set 'MyRedNonlinearProblem.proj_norm' to either '2-norm' or 'L2-norm' first!")
 
         V_h = self.hnl_problem.V_h
 
         if initGuess_strategy == "P":
-            from l_problem import LinearProblem
+            from rb_semilinear.l_problem import LinearProblem
             # --- Poisson weak formulation --- #
             u = TrialFunction(V_h) 
             v = TestFunction(V_h)
@@ -201,24 +210,26 @@ class MyRedNonlinearProblem(NonlinearProblem):
 
         elif initGuess_strategy == "0.5":
             u_h = Function(V_h)
-            u_h.vector()[:] = 0.6 #2.0#
+            u_h.vector()[:] = 1 #2.0#
             self.hnl_problem.bcs[0].apply(u_h.vector())
 
         elif initGuess_strategy == "0":
-            self.u_N_dof[:] = 0.
+            self.u_rbc[:] = 0.
             return 
-
+        elif initGuess_strategy == None:
+            # do nothin
+            return
         else:
             raise Exception(f"initial guess strategy '{initGuess_strategy}'\
                                 not implemented")
 
-        if proj_norm == "2-norm":#Für POD_2
+        if self.proj_norm == "2-norm":#Für POD_2
             self.u_rbc.set_local(self.RB.T @ u_h.vector().get_local())
-        elif proj_norm == "L2-norm":
+        elif self.proj_norm == "L2-norm":
             M = assemble(inner(TrialFunction(V_h),TestFunction(V_h))*dx).array()
             self.u_rbc.set_local(self.RB.T @ M @ u_h.vector().get_local())
         else:
-            raise Exception(f"Projection w.r.t. {proj_norm} not implemented!")
+            raise Exception(f"Projection w.r.t. {self.proj_norm} not implemented!")
 
     def proj(self, u_h:Function, proj_norm:Literal["L2-norm","2-norm"]):
         """

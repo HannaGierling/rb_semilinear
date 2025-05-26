@@ -149,7 +149,7 @@ class MySemilinearProblem(NonlinearProblem):
 
         """
         if strategy == "P":
-            from l_problem import LinearProblem
+            from rb_semilinear.l_problem import LinearProblem
             # --- Poisson weak formulation --- #
             u = TrialFunction(self.V_h); v = TestFunction(self.V_h)
             Pwf = self.mu_expr * inner(grad(u),grad(v)) * dx\
@@ -172,7 +172,7 @@ class MySemilinearProblem(NonlinearProblem):
                               - inner(u,v) * dx \
                               - inner(self.f, v) * dx
             # --- solve linear problem --- #
-            from l_problem import LinearProblem
+            from rb_semilinear.l_problem import LinearProblem
             l_problem = LinearProblem(lwf, self.bcs)
             l_problem.solve(self.u.vector())
         else:

@@ -29,7 +29,8 @@ class MyNewtonSolver():
         Instance of a Newton solver class corresponding to 'solver_type'
     """
     def __new__(cls, tol, maxit, report, 
-                solver_type:Literal["simplDamp", "adaptDamp", "ord", "nleqerr"]):
+                solver_type:Literal["simplDamp", "adaptDamp", "ord", "nleqerr"],
+                lam_min:float = 1e-8):
         """
         Factory class to create a NewtonSolver instance based on solver_type.
 
@@ -50,6 +51,9 @@ class MyNewtonSolver():
         report : bool
             If True, the solver prints informations while solving
         solver_type : str
+            DAmping strategy
+        lam_min : float
+            Minimal damping factor
     
         Returns
         -------
@@ -57,13 +61,13 @@ class MyNewtonSolver():
         """
 
         if solver_type == "simplDamp":
-            return MyNewton_simplDamp(tol, maxit, report)
+            return MyNewton_simplDamp(tol, maxit, report, lam_min)
         elif solver_type == "adaptDamp":
             return MyNewton_adaptDamp(tol, maxit, report, tau=0.5)
         elif solver_type == "ord":
             return MyNewton_ord(tol, maxit, report)
         elif solver_type == "nleqerr":
-            return MyNewton_nleqerr(tol, maxit, report)
+            return MyNewton_nleqerr(tol, maxit, report, lam_min)
         else:
             raise Exception(f"Newton solver type '{solver_type}' not implemented!")
  

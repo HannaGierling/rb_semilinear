@@ -245,6 +245,39 @@ def greedy_htype(hf_problem:MySemilinearProblem,    # high-fidelity problem
                  P_discr_opt:Literal["lin", "log"]  # options for discr. the Param.space
                  ):
 
+    """
+    Perform the h-type Greedy algorithm to adaptively construct a reduced basis model.
+
+    The h-type Greedy algorithm
+    selects representative parameter samples based on a given error tolerance
+    and recursively refines the parameter space.
+
+    Parameters
+    ----------
+    hf_problem : MySemilinearProblem
+        The high-fidelity problem object
+    
+    P_train : np.ndarray
+        Array of training parameter values used for the first Greedy sampling.
+    
+    eps_tol1 : float
+        Error tolerance 
+    
+    N_bar : int
+        Maximum number of basis vectors per leaf node
+    
+    folder : str
+        Path to the folder where results (e.g. Models, anchor parameters) are saved.
+    
+    P_discr_opt : {'lin', 'log'}
+        Discretization strategy for the parameter space. Can be linear or logarithmic.
+
+    Notes
+    -----
+    This method also generates and saves a plot visualizing the selected parameter discretization.
+    """
+
+
     # --- select and safe first anchor parameter μ_1 --- #
     amu_1 = P_train[int(0.3*len(P_train))]
     w2file(f"{folder}/amus.log", {"Bl": ["1"], "amu":[amu_1]}, mode="w", 
@@ -272,19 +305,4 @@ def greedy_htype(hf_problem:MySemilinearProblem,    # high-fidelity problem
     plt.savefig(f"{folder}/paramDiscr.png")
     plt.show()
 
-
-def plot_mu_trained(tol, folder, P_train_opt):
-    import matplotlib.pyplot as plt
-    tolstr = f"{tol:.2e}".replace("-","m").replace(".","p") 
-    #tmp = np.loadtxt(f"{folder}/P_train_delta{tolstr}.csv", delimiter=',')
-    tmp = np.loadtxt(f"{folder}/P_train.csv", delimiter=',')
-    Ds = tmp[:,0]
-    used = tmp[:,1]
-    plt.scatter(Ds,used)
-    if P_train_opt == "log":
-        plt.xscale('log')
-    plt.xlabel("µ"); plt.ylabel("used (bool)")
-    plt.title("parameters µ used by Greedy-algorithm")
-    plt.savefig(f"{folder}/mu_trained.png")
-    plt.show()
 

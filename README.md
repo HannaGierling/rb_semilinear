@@ -1,6 +1,16 @@
 # rb_semilinear
 
-📘 [Dokumentation ansehen](https://<username>.github.io/<repo-name>/)
+## 📘 Documentation
+[Dokumentation ansehen](https://<username>.github.io/<repo-name>/)
+ 
+ or for nicer darstellung:
+
+ ```bash
+ cd ./docs/_build/html
+ xdg-open index.html  # linux
+ open index.html      # macOS
+ start index.html     # Windows
+ ```
 
 ## 🔧 Requirements
 
@@ -37,9 +47,9 @@ conda create -n fenics_env -c conda-forge fenics
 conda activate fenics_env
 ```
 
-##  Running the `test_NS.py` Script
+##  Running the `test_ns.py` and `test_rbm.py` Script
 
-To run the `test_NS.py` script:
+To run the `test_ns.py` and `test_rbm.py` script:
 
 1. **Activate your Conda environment (If Anaconda was used for installing)**:
 
@@ -50,6 +60,6 @@ To run the `test_NS.py` script:
 2. **Run the script**:
 
     ```bash
-    python3 ./test_NS.py
+    python3 ./test_ns.py
     ```
 

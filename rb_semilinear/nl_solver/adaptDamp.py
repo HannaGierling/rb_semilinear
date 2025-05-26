@@ -46,8 +46,8 @@ class MyNewton_adaptDamp(MyNewtonBase):
         Indicates whether damping failed 
 
     """
-    def __init__(self, tol, maxit=100, report=True, tau=0.5):
-        MyNewtonBase.__init__(self, tol, maxit, report)
+    def __init__(self, tol, maxit=100, report=True, tau=0.5, lam_min=1e-8):
+        MyNewtonBase.__init__(self, tol, maxit, report, lam_min=lam_min)
         self.tau = tau
 
     def update_solution(self, x, dx, relaxation_parameter, nonlinear_problem,
@@ -77,7 +77,7 @@ class MyNewton_adaptDamp(MyNewtonBase):
 
         # --- damping --- #
         lam = min(sqrt(2.0*self.tau/norm(dx, norm_type="l2")), 1.0)
-        lam = max(lam, 1.e-5)
+        lam = max(lam, self.lam_min)
 
         # --- solution update --- #
         x.axpy(-lam, dx)

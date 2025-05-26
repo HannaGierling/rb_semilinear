@@ -3,9 +3,10 @@ from typing import Literal
 import numpy as np
 
 def get_P(P_range: list[float], 
-          P_strategy: Literal["decade", "decade_log", "log", "lin", "thesis"], 
+          P_strategy: Literal["decade", "decade_log", "log", "lin", "thesis",
+                              "lin_n_log"], 
           P_ns: int = 50, 
-          random: bool = False, endpoint: bool = True) -> np.array:
+          random: bool = False, endpoint: bool = True) -> np.ndarray:
     """
     Generate a sorted array of parameter values based on 
     distribution strategy.
@@ -20,6 +21,7 @@ def get_P(P_range: list[float],
         - "decade_log" : Logarithmic within each decade.
         - "log"        : Logarithmically 
         - "lin"        : Linearly 
+        - "lin_n_log"  : Union of 'log' and 'lin' sampling 
         - "thesis"     : selection of "decade" sampling as used in Thesis, Section 5 
 
     P_ns : int, optional
@@ -72,6 +74,14 @@ def get_P(P_range: list[float],
         mus = get_P(P_range, "decade", 9)
         mus = np.append( mus[4:-1:9],mus[0:-1:9])
         mus = np.append(mus, 1)
+    
+    elif P_strategy == "lin_n_log":
+        if P_ns % 2 != 0:
+            print("WARNING:  If P_ns is not divisible by 2, the resulting"+\
+                        " number of samples may slightly differ from P_ns")
+        ns = int(P_ns/2)
+        mus = get_P(P_range, "lin", ns)
+        mus = np.append(mus, get_P(P_range, "log", ns))
         
     else:
         raise Exception(f"Sampling strategy '{P_strategy}' not implemented.")

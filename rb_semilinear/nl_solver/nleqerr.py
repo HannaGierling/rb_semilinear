@@ -21,6 +21,8 @@ class MyNewton_nleqerr(PETScSNESSolver):
         Maximum number of Newton iterations
     report : bool
         If True, the solver prints informations while solving
+    lam_min : foat
+        Minimal damping factor.
 
     Attributes
     ----------
@@ -29,7 +31,7 @@ class MyNewton_nleqerr(PETScSNESSolver):
     NitInfos : dict
         Dictionary with information at each iteration
     """
-    def __init__(self, tol, maxit=100, report = True):
+    def __init__(self, tol, maxit=100, report = True, lam_min=1e-8):
         PETScSNESSolver.__init__(self)
         self.parameters["method"] = "newtonls"
         self.parameters["line_search"] = "nleqerr"
@@ -43,6 +45,7 @@ class MyNewton_nleqerr(PETScSNESSolver):
         self.parameters["report"] = report 
         
         #PETScOptions.set("snes_linesearch_monitor", "")
+        #PETScOptions.set("snes_linesearch_minlambda",1e-12)#lam_min)
         if report == True:
             PETScOptions.set("snes_monitor", "")
             PETScOptions.set("snes_converged_reason", "")

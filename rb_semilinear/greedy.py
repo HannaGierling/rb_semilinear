@@ -7,7 +7,9 @@ import numpy as np
 #def proj_error(V_h,u_dof:np.ndarray, V:np.ndarray, X:np.ndarray):
 def _proj_error(u_dof:np.ndarray, V:np.ndarray, X:np.ndarray):
     err_dof = u_dof - V @ V.T @ X @ u_dof
+    #return np.linalg.norm(u_dof - V @ V.T @ X @ u_dof)
     return np.sqrt(err_dof.T @ X @ err_dof)
+
 
 
 def _gram_schmidt(V:np.ndarray, u_dof:np.ndarray, X:np.ndarray):
@@ -72,6 +74,8 @@ def comp_greedyRB(S: np.ndarray,
     V           = []                # reduced basis
     P_used      = []                # parameter values selected by Greedy
     P_ids_used  = []                # indeces of selected param.vals in P_train
+    P_ids_nused = range(len(P_train))
+    
     eps         = greedy_tol + 1    # initial error value
 
     Ps = P_train.copy()
@@ -100,8 +104,8 @@ def comp_greedyRB(S: np.ndarray,
         # --- delete trained 'mu' and corresponding snapshot --- #
         S = np.delete(S, id_muN, axis=1)
         Ps = np.delete(Ps, id_muN)
-        #P_ids_ntrained = np.delete(P_ids_ntrained, id_mu)
-        P_ids_used.append(id_muN) 
+        P_ids_nused = np.delete(P_ids_nused, id_muN)
+        #P_ids_used.append(id_muN) 
 
         # --- select μ with max. projection error --- #
         errors = [_proj_error(S[:,id], np.array(V).T,M) for id in range(len(Ps))]
@@ -111,12 +115,12 @@ def comp_greedyRB(S: np.ndarray,
         N += 1
     
     # --- report --- #
-    print(f"max. error = {eps:.2e} (for μ = {muN:.4e})")
+    print(f"remaining max. error = {eps:.2e} (for μ = {muN:.4e})")
 
     V = np.stack([v for v in V], axis=1)
     # --- flags indicating whether corresp. param. in P_train was selected 
-    P_used_flags = np.zeros_like(P_train)
-    P_used_flags[P_ids_used] = 1 
+    P_used_flags = np.ones_like(P_train)
+    P_used_flags[P_ids_nused] = 0 
     
     if folder is not None:
         os.makedirs(folder, exist_ok=True)

@@ -3,8 +3,8 @@ from .utils import str2pathstr
 
 import numpy as np
 
-def comp_POD(S:np.array, N_max:int, tol:float, 
-        M:np.array = None, 
+def comp_POD(S:np.ndarray, N_max:int, tol:float, 
+        M:np.ndarray = None, 
         folder:str = None, plot:bool = False, ret_sigma:bool = False):
     """
     Perform Proper Orthogonal Decompositon (POD) on given snapshot matrix 'S'.
@@ -67,7 +67,7 @@ def comp_POD(S:np.array, N_max:int, tol:float,
         
         # --- csv-file --- #
         df = pd.DataFrame({"sigma":sigma}); df['i'] = df.axes[0]
-        df.to_csv(f"{folder}/sigma_Nmax_{N_max}_tol_"+str2pathstr(f"{tol:.2e}")+".csv", 
+        df.to_csv(f"{folder}/sigma.csv",#_Nmax_{N_max}_tol_"+str2pathstr(f"{tol:.2e}")+".csv", 
                   sep='\t', encoding='utf-8',index=False, header=True)
 
         # --- plot --- #
