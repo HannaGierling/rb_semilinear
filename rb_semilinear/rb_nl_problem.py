@@ -109,6 +109,7 @@ class MyRedNonlinearProblem(NonlinearProblem):
             - "||u_h-P_N(u_h)||_L2": L2 norm of 'u_h' and its projection.
 
         """
+
         if self.proj_norm == None:
             raise Exception("You have to set 'MyRedNonlinearProblem.proj_norm' to either '2-norm' or 'L2-norm' first!")
 
@@ -119,7 +120,7 @@ class MyRedNonlinearProblem(NonlinearProblem):
         if self.proj_norm not in {"L2-norm", "2-norm"}:
             raise Exception(f"Projection w.r.t. {self.proj_norm} not implemented!")
 
-        dx_q = dx(metadata={'quadrature_degree':9})
+        dx_q = dx(metadata={'quadrature_degree':5})
 
         P_u_h = self.proj(u_h, proj_norm=self.proj_norm)
 
@@ -127,6 +128,13 @@ class MyRedNonlinearProblem(NonlinearProblem):
         PerrL2 = assemble((u_h-P_u_h)**2*dx_q)**0.5                         # same as errornorm(u_h, P_u_h)
         #errL2 = norm(self.u_N().vector()-u_h.vector())
         #PerrL2 = norm(P_u_h.vector() - u_h.vector())
+
+        #import matplotlib.pyplot as plt
+        #plt.figure(figsize=(6,8))
+        #plot(u_h, label = "u_h")
+        #plot(self.u_N(), label="u_N")
+        #plt.title(f"Perr={PerrL2:.2e}, err={errL2:.2e}")
+        #plt.legend()#; plt.show()
 
         errors = {"||u_h-u_N||_L2"              : errL2,
                   "||u_h-P_N(u_h)||_L2"         : PerrL2}

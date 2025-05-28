@@ -428,12 +428,17 @@ class Fisher_mms(MySemilinearProblem):
         # L2 norm
         E5 = errornorm(self.u_D, self.u, norm_type='L2', degree_rise=5)
 
-        # H1 seminorm
+        # H10 seminorm
         E6 = errornorm(self.u_D, self.u, norm_type='H10', degree_rise=3)
+
+        # H1 norm
+        E7 = errornorm(self.u_D, self.u, norm_type="H1", degree_rise=3)
 
         errors = {'||u-u_e||_L2': E5, 
                 '||u_dofs-u_e_dofs||_inf': E4,
-                '|u-u_e|_H10': E6}
+                '|u-u_e|_H10': E6,
+                '|u-u_e|_H1': E7}
+
 
         return errors
 

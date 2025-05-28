@@ -187,26 +187,28 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
 
     else:
         # --- select and safe new anchor μs --- #
-        amu_Blp0 = amu_1
-        amu_Blp1 = M_Bl[1]
+        amu_Blp0 = min(amu_1,M_Bl[1])
+        amu_Blp1 = max(amu_1,M_Bl[1])
         w2file(f"{folder}/amus.log", {"Bl": [Blp0], "amu":[amu_Blp0]}, mode="a")
         w2file(f"{folder}/amus.log", {"Bl": [Blp1], "amu":[amu_Blp1]}, mode="a")
 
-        #amu_m = (amu_Blp0+amu_Blp1)/2
         #Ps_Bl_tilde = np.append(Ps_Bl_tilde,[amu_Blp0,amu_Blp1])
-        #Ps_Blp0 = get_P([amu_1,amu_m],"log",int(1.2*len(P_Bl_train)), endpoint=False)
-        #Ps_Blp1 = get_P([amu_m,P_Bl_train[-1]],"log",int(1.2*len(P_Bl_train)), endpoint=True)
         
         # --- select training parameter sets for new leaf nodes --- #
         Ps_Blp0 = [];          Ps_Blp1= []
         Ps_Bl_tilde = get_P([P_Bl_train[0],P_Bl_train[-1]], 
                              P_discr_opt, 2*len(P_Bl_train))
         opt = "Val" if P_discr_opt == "lin" else "Exp"
-        for mu in Ps_Bl_tilde:
-            if _proximity(amu_Blp0, mu, opt) <= _proximity(amu_Blp1, mu, opt):
-                Ps_Blp0.append(mu)
-            else:
-                Ps_Blp1.append(mu)
+        #for mu in Ps_Bl_tilde:
+            #if _proximity(amu_Blp0, mu, opt) <= _proximity(amu_Blp1, mu, opt):
+                #Ps_Blp0.append(mu)
+            #else:
+                #Ps_Blp1.append(mu)
+        e0 = np.log10(amu_Blp0)
+        e1 = np.log10(amu_Blp1)
+        amu_m = 10**(min(e1,e0)+ abs(e1-e0)/2)
+        Ps_Blp0 = get_P([P_Bl_train[0],amu_m],"log",int(1*len(P_Bl_train)), endpoint=False)
+        Ps_Blp1 = get_P([amu_m,P_Bl_train[-1]],"log",int(1*len(P_Bl_train)), endpoint=True)
 
         # --- plot selected parameter values ---- #
         plt.scatter(Ps_Blp0, int(Blp0)*np.ones_like(Ps_Blp0), c='red')
@@ -214,16 +216,7 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
         plt.scatter(Ps_Blp1, int(Blp0)*np.ones_like(Ps_Blp1), c='blue')
         plt.scatter(amu_Blp1, int(Blp0)*1, c='lightsteelblue', marker='s', s=80)
         plt.xscale(P_discr_opt), plt.yscale('log')
-
-        # --- report --- #
-        print(f"Bl = [{Blp0}]")
-        print("P_Bl = [",end="");[print(f"{mu:.2e}",end=" ") for mu in Ps_Blp0]; 
-        print("]")
-        print(f"len(P_Bl) = {len(Ps_Blp0)}")
-
-        # --- recursive function call for left leaf node --- #
-        _greedy_htype(hf_problem, Ps_Blp0, eps_tol1, N_bar, Blp0, folder, P_discr_opt)
-
+        
         # --- report --- #
         print(f"Bl = [{Blp1}]")
         print("P_Bl = [",end="");[print(f"{mu:.2e}",end=" ") for mu in Ps_Blp1]; 
@@ -232,7 +225,16 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
 
         # --- recursive function call for right leaf node --- #
         _greedy_htype(hf_problem, Ps_Blp1, eps_tol1, N_bar, Blp1, folder, P_discr_opt)
-                      
+
+         # --- report --- #
+        print(f"Bl = [{Blp0}]")
+        print("P_Bl = [",end="");[print(f"{mu:.2e}",end=" ") for mu in Ps_Blp0]; 
+        print("]")
+        print(f"len(P_Bl) = {len(Ps_Blp0)}")
+
+        # --- recursive function call for left leaf node --- #
+        _greedy_htype(hf_problem, Ps_Blp0, eps_tol1, N_bar, Blp0, folder, P_discr_opt)
+             
 
 
 

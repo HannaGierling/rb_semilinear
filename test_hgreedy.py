@@ -37,22 +37,23 @@ homotopie       = False
 #------------------#
 
 # --- settings for parameter training space --- #
-P_train_range   = [2.e-4,1]       # parameter range
+P_train_range   = [2.e-5,1]       # parameter range
 
 # --- settings for constr. of RB --- #
-RB_tol          = 100/N_h**2
+RB_tol          = 10/N_h**2
 RB_N_max        = 15 
 P_1_discr_opt   = "log"
 P_1_ns          = 50
 P_Bl_discr_opt  = "log"
 
 # --- settings for solver --- #
-rb_Rtol         = 100/N_h**2       # tolerance for residual in NewtonSolver
+rb_Rtol         = 10/N_h**2       # tolerance for residual in NewtonSolver
 rb_maxit        = 100             # max. number of iterations for NewtonSolver
-rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy : "P","0","0.5" or "LP"
+rb_initGuess_opt = "u_h(amu)"#hf_initGuess_opt # initial Guess strategy : 
+                                    # "u_h(amu)","P","0","0.5" or "LP"
 
 # --- settings for parameter test space --- #
-P_test_range    = [2.1e-4, 0.89] # parameter range
+P_test_range    = [2.1e-5, 0.89] # parameter range
 P_test_ns       = 50              # number of parameter samples
 P_test_random   = False           # random parameter selction
 P_test_opt      = "log"           # discr. strategy for param.space: 
@@ -92,7 +93,7 @@ if only_hf == False:
                         f"{str2pathstr(rb_initGuess_opt)}_{P_test_opt}"+\
                          f"{P_test_ns}{'random' if P_test_random==True else ''}"
 
-# --- compute reduced basis --- #
+# --- (compute) reduced basis --- #
     import os
     if os.path.exists(stuff_folder):
         only_rbtesting = True
@@ -111,8 +112,8 @@ if only_hf == False:
 # --- test reduced problem for µ in 'P_test' --- #
     mapping = {}
     S = np.zeros((N_h+1, len(P_test)))
-    for idD, D in enumerate(P_test):
-
+    for idD, D in enumerate(P_test[25:35]):
+        #plt.figure(figsize=(10, 16))
         #--- find corresponging V --- #
         opt         = "Val" if P_Bl_discr_opt == "lin" else "Exp"
         Bl          = find_Bl(D, stuff_folder, opt)
@@ -129,10 +130,26 @@ if only_hf == False:
             u_h.vector().set_local(S[:,idD])
         else:
             SolInfo, NitInfo = hf_problem.solve(D)#, hf_initGuess_opt)
-            u_h = hf_problem.u
+            u_h = Function(hf_problem.V_h)
+            u_h.assign(hf_problem.u)
             if SolInfo["converged"] != 1:
                 print(f"WARNING: hf_problem not conveged for µ={D}")
                 u_h = None
+            if u_h is not None : plot(u_h, label="u_h") 
+        
+        # set corresponding initial guess
+        if rb_initGuess_opt == "u_h(amu)":
+            from rb_semilinear.hgreedy import _get_amu
+            rb_problem.initGuess_strategy = None
+
+            amu = _get_amu(Bl, stuff_folder)
+            hf_problem.solve(amu)
+
+            V_h = hf_problem.V_h
+            M = assemble(inner(TrialFunction(V_h),TestFunction(V_h))*dx).array()
+            rb_problem.u_rbc.set_local(V.T @ M @ hf_problem.u.vector().get_local())
+            plot(rb_problem.u_N(), label="u_rbc_init")
+
 
         # --- solve rb-problem for 'mu' --- #
         SolInfo, NitInfo = rb_problem.solve(D)
@@ -152,7 +169,8 @@ if only_hf == False:
 
         # --- plot reduced solution (and hf-solution) --- #
         plot(rb_problem.u_N(), label=f"µ={D:.3e}, conv={SolInfo['converged']}")
-        if u_h is not None :plot(u_h, label="u_h") 
+        plt.title(f"errP={SolInfo['||u_h-P_N(u_h)||_L2']:.2e}, err={SolInfo['||u_h-u_N||_L2']:.2e}")
+        plt.legend(); plt.show()
 
     plt.title("Reduced Solutions"); plt.xlabel("x"); plt.ylabel(r"$u_N(\mu)$")
     plt.legend(); plt.show()
@@ -181,7 +199,7 @@ if only_hf == False:
 
     # --- plot some converged solutions --- #
     myPlot(solving_folder, Ns_2plot=[RB_N_max], Mus_2plot=P_test,#[0:-1:5], 
-            converged_only=False, plotfilename=f"{RB_N_max}.png", plot = True)
+            converged_only=True, plotfilename=f"{RB_N_max}.png", plot = True)
 
     # --- plot convergence mapping --- #
     convMap(solving_folder, plot = True)

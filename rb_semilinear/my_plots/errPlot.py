@@ -40,20 +40,24 @@ def errPlot(path, mu, plot=False):
     err_L2 = dfD['||u-u_e||_L2'].array.tolist()
     err_inf = dfD['||u_dofs-u_e_dofs||_inf'].array.tolist()
     err_H10 = dfD['|u-u_e|_H10'].array.tolist()
+    err_H1 = dfD['|u-u_e|_H1'].array.tolist()
 
     hs = [1.0 / N for N in Ns]
     r_L2_values = []
     r_inf_values = []
     r_H10_values = []
+    r_H1_values = []
     for i in range(1, len(hs)):
         r_L2_values.append(np.log(err_L2[i]/ err_L2[i-1])/np.log(hs[i]/ hs[i-1]))
         r_inf_values.append(np.log(err_inf[i]/ err_inf[i-1])/np.log(hs[i]/ hs[i-1]))
         r_H10_values.append(np.log(err_H10[i]/ err_H10[i-1])/np.log(hs[i]/ hs[i-1]))
+        r_H1_values.append(np.log(err_H1[i]/ err_H1[i-1])/np.log(hs[i]/ hs[i-1]))
 
     tmp_L2 = [h*h*(err_L2[0]-0.001)/hs[0]**2 for h in hs]
 
     average_r_L2 = np.mean(r_L2_values)
     average_r_H10 = np.mean(r_H10_values)
+    average_r_H1 = np.mean(r_H1_values)
     average_r_inf = np.mean(r_inf_values)
 
     csv_df = pd.DataFrame({
@@ -61,6 +65,7 @@ def errPlot(path, mu, plot=False):
     "L2":err_L2,
     "inf":err_inf,
     "H10":err_H10,
+    "H1":err_H1,
     "ref":tmp_L2
     })
 
@@ -71,6 +76,7 @@ def errPlot(path, mu, plot=False):
     plt.loglog(Ns,err_L2, 'o-', label='err_L2, r=%.3f'%average_r_L2)
     plt.loglog(Ns,err_inf, 'o-', label='err_inf, r=%.3f'%average_r_inf)
     plt.loglog(Ns,err_H10, 'o-', label='err_H10, r=%.3f'%average_r_H10)
+    plt.loglog(Ns,err_H1, 'o-', label='err_H1, r=%.3f'%average_r_H1)
     plt.loglog(Ns,tmp_L2, label="convergence rate 2")
     plt.xlabel('N_h'); plt.ylabel('err')
     plt.title(f'Error for D={mu:.0e}')

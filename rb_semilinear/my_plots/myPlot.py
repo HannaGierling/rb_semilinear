@@ -96,10 +96,14 @@ def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float],
         x = np.loadtxt(f"{path}/x_{N}.csv", delimiter=',')
 
         S = np.loadtxt(f"{path}/S_{N}.csv", delimiter=',')
-        S = S[:, ids_MusFound]
-        [plt.plot(x, S[:, i], label=f"μ={MusFound[i]:.3e}," +\
-                  f"conv={convs_MusFound[i]}") for i in range(len(MusFound))]
-        plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
+        if S.ndim == 1 and len(MusFound) == 1:
+            plt.plot(x, S, label=f"μ={MusFound[0]:.3e}, conv={convs_MusFound[0]}")
+            plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
+        else:
+            S = S[:, ids_MusFound]
+            [plt.plot(x, S[:, i], label=f"μ={MusFound[i]:.3e}," +\
+                    f"conv={convs_MusFound[i]}") for i in range(len(MusFound))]
+            plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
 
     if plotfilename is not None:
         plt.savefig(f"{path}/{plotfilename}")

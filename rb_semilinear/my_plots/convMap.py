@@ -38,8 +38,10 @@ def convMap(path, plot=False):
 
     plt.figure(figsize=(10, 16))
     plt.imshow(grid, cmap=cmap, origin='lower', aspect='auto')
-    plt.xticks(ticks=range(len(Ns)), labels=Ns)
-    plt.yticks(ticks=range(len(Ds)), labels=Ds)
+    plt.xticks(ticks=range(len(Ns)), labels=[f"{N:.2e}" for N in Ns])
+    plt.yticks(ticks=range(len(Ds)), labels=[f"{D:.2e}" for D in Ds])
+    #plt.xticks(ticks=range(len(Ns)), labels=Ns)
+    #plt.yticks(ticks=range(len(Ds)), labels=Ds)
     plt.grid(True)
     plt.xlabel('N_h')
     plt.ylabel('μ')

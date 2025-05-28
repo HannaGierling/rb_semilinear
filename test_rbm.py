@@ -36,9 +36,9 @@ homotopie       = False
 
 # --- settings for parameter training space --- #
 P_train_range   = [2.e-5,1]       # parameter range
-P_train_ns      = 300             # number of parameter samples
+P_train_ns      = 50              # number of parameter samples
 P_train_random  = False           # random parameter selction
-P_train_opt     = "log"           # discr. strategy for param.space: 
+P_train_opt     = "log"#_n_log"           # discr. strategy for param.space: 
                                   # log","decade_log","lin","decade","lin_n_log"
 
 # --- get 'P_train' --- #
@@ -49,7 +49,7 @@ P_train  = get_P(P_train_range, P_train_opt, P_train_ns, P_train_random)
 #------------------#
 
 # --- settings for constr. of RB --- #
-RB_opt          = "Greedy"         # RB generation : "POD_L2","POD_2","Greedy","htype_Greedy"
+RB_opt          = "Greedy"        # RB generation : "POD_L2","POD_2","Greedy","htype_Greedy"
 RB_tol          = 10/N_h**2       # tolerance for either POD or Greedy
 RB_N_max        = P_train_ns      # max. number of RB-functions
 
@@ -60,8 +60,8 @@ rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy :
                                     #   "u_h", "P","0","0.5" or "LP"
 
 # --- settings for parameter test space --- #
-P_test_range    = [2.1e-5, 0.89] # parameter range
-P_test_ns       = 50              # number of parameter samples
+P_test_range    = [0.003,0.005]#[2.1e-5, 0.89] # parameter range
+P_test_ns       = 80              # number of parameter samples
 P_test_random   = False           # random parameter selction
 P_test_opt      = "log"           # discr. strategy for param.space: 
                                   #  "log","decade_log","lin","decade","P_train"

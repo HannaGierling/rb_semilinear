@@ -120,7 +120,7 @@ def comp_S(problem:MySemilinearProblem,
         df = pd.DataFrame(mapping, index=None); df['t'] = df.axes[0]
         df = df.astype({'nit': 'int32', 'converged': 'int32', 'N': 'int32'})
         if not isinstance(problem.solver, PETScSNESSolver):
-            df = df.astype({'lam-FAIL':'int32'})
+            df = df.astype({'λ-FAIL':'int32'})
         w2file("%s/%s"%(folder, "mapping.log"), 
                 df.to_string(float_format=lambda x: "{:.10e}".format(x)), "w")
         myPlot(folder, [problem.N_h], P_train[0:-1:5], 

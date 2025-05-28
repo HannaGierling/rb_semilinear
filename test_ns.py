@@ -14,33 +14,31 @@ testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson}
 #----- SETTINGS ---------------------------------------------------------------#
 
 # --- selcect test problem --- #       
-test_problem        =  "mmsF"              # "F","mmsF" or "slP"
+test_problem        = "F"                   # "F","mmsF" or "slP"
 
 # --- settings for solver --- #       
 solver_type         = "nleqerr"             # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
 
-# ! for solver validation use N_hs = [50, 100, 200, 500, 1000, 2000, 3000, 5000, 6000, 7000]
-#   in combination with test_problem = "mmsF"
-
 N_hs                = [1000]                # number of intervals in spat.discr.
+# !INFO: for solver validation use 
+# N_hs = [50, 100, 200, 500, 1000, 2000, 3000, 5000, 6000, 7000]
+#   in combination with test_problem = "mmsF" and Ps = [0.5]
 
 maxit               = 100                   # max. number of iterations for NewtonSolver
 atol                = lambda N_h: 1/N_h**2  # tolerance for residual in NewtonSolver
 initGuess_strategy  = "0.5"                 # initial Guess strategy : "P","0","0.5" or "LP"
 
-
 # --- parameter --- #
 P_range = [1.e-5,1]                         # parameter range
-
 # --- Select parameter values μ according to Section 5 of the thesis --- #
 P_discr_strategy = "thesis"
-Ps = get_P(P_range, P_discr_strategy)
+Ps = get_P(P_range, P_discr_strategy)        # use [0.5] for solver validation
 #------------------------------------------------------------------------------#
 
 # --- folder path --- #
 problemfolder = str2pathstr(f"{test_problem}/{P_discr_strategy}") 
 solverfolder = str2pathstr(f"{initGuess_strategy}/{solver_type}")
-folder       = f"{os.path.dirname(__file__)}/test_MyNewtonSolver/"+\
+folder       = f"{os.path.dirname(__file__)}/test_ns/"+\
                 f"{problemfolder}/{solverfolder}"
 
 # --- for logging --- #
@@ -92,11 +90,11 @@ w2file(f"{folder}/mapping.log", df.to_string(), "w")
 convMap(folder, plot=True)
 
 # --- error Plot --- #
-if test_problem=="mmsF" and len(N_hs)>5:
-    errPlot(folder, Ps[-2], plot = True)
+if test_problem=="mmsF" and len(N_hs)>5 and len(Ps)==1:
+    errPlot(folder, Ps[0], plot = True)
 
 # --- plot converged solutions --- #
-for N in N_hs:
+for N in N_hs[-2:-1]:
     myPlot(folder, Ns_2plot=[N_h], Mus_2plot=Ps, converged_only=True , 
            plotfilename=f"{N_h}.png", plot=True)
 
