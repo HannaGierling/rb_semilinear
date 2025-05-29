@@ -1,4 +1,4 @@
-name: docs_env
+name: rb_semilinear
 channels:
   - conda-forge
 dependencies:
