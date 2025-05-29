@@ -4,13 +4,11 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.13"
-    conda: "mambaforge"
 
 python:
   install:
-    method: conda
-    environment: environment.yml
-    path: .
+    - method: conda
+      environment: environment.yml
     
 
 sphinx:
