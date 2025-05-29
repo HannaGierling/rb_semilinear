@@ -7,7 +7,7 @@ build:
 
 python:
   install:
-    - path: docs/environment.yml
+    - path: docs/environment.yml 
     
 
 sphinx:
