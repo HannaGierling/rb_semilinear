@@ -47,14 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="sl_problems.html">Semilinear Problem classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rb_m.html">Methods for Reduced Basis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nl_solver.html">Newton Solver Classes</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions for various visualizations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.my_plots.myPlot.myPlot"><code class="docutils literal notranslate"><span class="pre">myPlot()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.my_plots.convMap.convMap"><code class="docutils literal notranslate"><span class="pre">convMap()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.my_plots.errPlot.errPlot"><code class="docutils literal notranslate"><span class="pre">errPlot()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.my_plots.errRedSols.errRedSolsPlot"><code class="docutils literal notranslate"><span class="pre">errRedSolsPlot()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rb_semilinear.my_plots.muTrainedPlot.plot_mu_trained"><code class="docutils literal notranslate"><span class="pre">plot_mu_trained()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions for various visualizations</a></li>
 </ul>
 
         </div>
@@ -81,83 +74,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-rb_semilinear.my_plots.myPlot">
-<span id="functions-for-various-visualizations"></span><h1>Functions for various visualizations<a class="headerlink" href="#module-rb_semilinear.my_plots.myPlot" title="Link to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="rb_semilinear.my_plots.myPlot.myPlot">
-<span class="sig-prename descclassname"><span class="pre">rb_semilinear.my_plots.myPlot.</span></span><span class="sig-name descname"><span class="pre">myPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ns_2plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mus_2plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">converged_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotfilename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.my_plots.myPlot.myPlot" title="Link to this definition"></a></dt>
-<dd><p>Plots solutions for selected N and μ values in ‘Ns_2plot’ and ‘Mus_2plot’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – _description_</p></li>
-<li><p><strong>Ns_2plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – _description_</p></li>
-<li><p><strong>Mus_2plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>]</em>) – _description_</p></li>
-<li><p><strong>converged_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – _description_</p></li>
-<li><p><strong>csvfilename</strong> (<em>_type_</em><em>, </em><em>optional</em>) – _description_, by default None</p></li>
-<li><p><strong>plotfilename</strong> (<em>_type_</em><em>, </em><em>optional</em>) – _description_, by default None</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function" id="module-rb_semilinear.my_plots.convMap">
-<dt class="sig sig-object py" id="rb_semilinear.my_plots.convMap.convMap">
-<span class="sig-prename descclassname"><span class="pre">rb_semilinear.my_plots.convMap.</span></span><span class="sig-name descname"><span class="pre">convMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.my_plots.convMap.convMap" title="Link to this definition"></a></dt>
-<dd><p>Generates and saves convergence map from file ‘mapping.log’ in
-directory ‘path’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Directory path where ‘mapping.log’ file is located
-and where convergence map ‘convMap.png’ will be saved.</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, convergence map is shown after saving it.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function" id="module-rb_semilinear.my_plots.errPlot">
-<dt class="sig sig-object py" id="rb_semilinear.my_plots.errPlot.errPlot">
-<span class="sig-prename descclassname"><span class="pre">rb_semilinear.my_plots.errPlot.</span></span><span class="sig-name descname"><span class="pre">errPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.my_plots.errPlot.errPlot" title="Link to this definition"></a></dt>
-<dd><p>Generates and saves error plot from file ‘mapping.log’ in
-directory ‘path’ for parameter ‘mu’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Directory path where ‘mapping.log’ file is located
-and where error plot ‘err_mu{mu}.png’ will be saved.</p></li>
-<li><p><strong>mu</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Parameter value for which the error plot is generated.</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, convergence map is shown after saving it.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function" id="module-rb_semilinear.my_plots.errRedSols">
-<dt class="sig sig-object py" id="rb_semilinear.my_plots.errRedSols.errRedSolsPlot">
-<span class="sig-prename descclassname"><span class="pre">rb_semilinear.my_plots.errRedSols.</span></span><span class="sig-name descname"><span class="pre">errRedSolsPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">csvfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.my_plots.errRedSols.errRedSolsPlot" title="Link to this definition"></a></dt>
-<dd><p>Plot and export error norms of reduced solutions from file ‘mapping.log’ in
-directory ‘path’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Directory where file ‘mapping.log’ is located and where plot will be
-saved</p></li>
-<li><p><strong>csvfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Path for CSV file.</p></li>
-<li><p><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – If ‘lin’, plots with linear x-axis. if ‘log’, plots whith
-locarithmic x-axis, by default “log”.</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, plot is shown, by default False.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function" id="module-rb_semilinear.my_plots.muTrainedPlot">
-<dt class="sig sig-object py" id="rb_semilinear.my_plots.muTrainedPlot.plot_mu_trained">
-<span class="sig-prename descclassname"><span class="pre">rb_semilinear.my_plots.muTrainedPlot.</span></span><span class="sig-name descname"><span class="pre">plot_mu_trained</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_train_opt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rb_semilinear.my_plots.muTrainedPlot.plot_mu_trained" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+  <section id="functions-for-various-visualizations">
+<h1>Functions for various visualizations<a class="headerlink" href="#functions-for-various-visualizations" title="Link to this heading"></a></h1>
 </section>
 
 

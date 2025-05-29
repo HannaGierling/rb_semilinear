@@ -1,6 +1,5 @@
-name: fenics 
-channels:
-  - conda-forge
+name: fenics_env
+
 dependencies:
   - python=3.10
   - fenics

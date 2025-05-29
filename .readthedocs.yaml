@@ -5,10 +5,8 @@ build:
   tools:
     python: "3.13"
 
-python:
-  install:
-    - path: docs/environment.yml 
-    
+conda:
+  environment: docs/environment.yml
 
 sphinx:
   configuration: docs/conf.py
