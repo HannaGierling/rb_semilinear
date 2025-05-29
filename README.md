@@ -1,6 +1,11 @@
 # rb_semilinear
 
 ## 📘 Documentation
+
+Open Documentation: [https://hannagierling.github.io/rb_semilinear/](https://hannagierling.github.io/rb_semilinear/)
+
+or
+
  ```bash
  cd ./docs/_build/html
  xdg-open index.html  # linux
