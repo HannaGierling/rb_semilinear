@@ -1,0 +1,13 @@
+name: docs_env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - fenics
+  - myst-parser
+  - sphinx
+  - sphinx-autodoc-typehints
+  - pip
+  - pip:
+      - sphinx_rtd_theme
+

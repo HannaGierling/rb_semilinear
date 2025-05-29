@@ -1,31 +1,26 @@
 # rb_semilinear
 
 ## 📘 Documentation
-[Dokumentation ansehen](https://<username>.github.io/<repo-name>/)
- 
- or for nicer darstellung:
-
  ```bash
  cd ./docs/_build/html
  xdg-open index.html  # linux
  open index.html      # macOS
- start index.html     # Windows
  ```
 
 ## 🔧 Requirements
 
 This project uses [FEniCS](https://fenicsproject.org/), so please make sure it is installed correctly before running any scripts.
 
-> Note:  
+> ⚠️ Note:  
 > FEniCS runs natively on **Linux**.  
 > If you're using **Windows**, you must install and use the **Windows Subsystem for Linux (WSL)**.  
-> 👉 See the official WSL installation guide: https://docs.microsoft.com/en-us/windows/wsl/install
+> 👉 See the [official WSL installation guide](https://docs.microsoft.com/en-us/windows/wsl/install)
 
 
-## Installing FEniCS
-The following instructions are copied from https://fenicsproject.org/download/archive/.
+## ⬇️ Installing FEniCS
+The following instructions are copied from [https://fenicsproject.org/download/archive/](https://fenicsproject.org/download/archive/).
 
-> Note:
+> ⚠️ Note: 
 > We recommend using a Linux distribution if possible. 
 > For installation, we suggest using Anaconda, as it takes care of all dependencies
     in a seperate environment.
@@ -57,7 +52,7 @@ sudo apt-get update
 sudo apt-get install fenics
 ```
 
-##  Running the `test_ns.py` and `test_rbm.py` Script
+## ▶️  Running the `test_ns.py` and `test_rbm.py` Script
 
 To run the `test_ns.py` and `test_rbm.py` script:
 

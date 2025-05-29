@@ -76,21 +76,46 @@
              
   <section id="rb-semilinear">
 <h1>rb_semilinear<a class="headerlink" href="#rb-semilinear" title="Link to this heading"></a></h1>
-<p>📘 <a class="reference external" href="https://%3Cusername%3E.github.io/%3Crepo-name%3E/">Dokumentation ansehen</a></p>
+<section id="documentation">
+<h2>📘 Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>./docs/_build/html
+xdg-open<span class="w"> </span>index.html<span class="w">  </span><span class="c1"># linux</span>
+open<span class="w"> </span>index.html<span class="w">      </span><span class="c1"># macOS</span>
+</pre></div>
+</div>
+</section>
 <section id="requirements">
 <h2>🔧 Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>This project uses <a class="reference external" href="https://fenicsproject.org/">FEniCS</a>, so please make sure it is installed correctly before running any scripts.</p>
 <blockquote>
-<div><p>Note:
+<div><p>⚠️ Note:
 FEniCS runs natively on <strong>Linux</strong>.
 If you’re using <strong>Windows</strong>, you must install and use the <strong>Windows Subsystem for Linux (WSL)</strong>.
-👉 See the official WSL installation guide: https://docs.microsoft.com/en-us/windows/wsl/install</p>
+👉 See the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install">official WSL installation guide</a></p>
 </div></blockquote>
 </section>
-<hr class="docutils" />
 <section id="installing-fenics">
-<h2>Installing FEniCS<a class="headerlink" href="#installing-fenics" title="Link to this heading"></a></h2>
-<p>The following instructions are copied from https://fenicsproject.org/download/archive/.</p>
+<h2>⬇️ Installing FEniCS<a class="headerlink" href="#installing-fenics" title="Link to this heading"></a></h2>
+<p>The following instructions are copied from <a class="reference external" href="https://fenicsproject.org/download/archive/">https://fenicsproject.org/download/archive/</a>.</p>
+<blockquote>
+<div><p>⚠️ Note:
+We recommend using a Linux distribution if possible.
+For installation, we suggest using Anaconda, as it takes care of all dependencies
+in a seperate environment.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="anaconda">
+<h3>Anaconda<a class="headerlink" href="#anaconda" title="Link to this heading"></a></h3>
+<p>To use the prebuilt Anaconda Python package, run following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>fenics_env<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>fenics
+</pre></div>
+</div>
+<p>➡️ Creates a new Conda environment named fenics_env and installs FEniCS from conda-forge.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
+</pre></div>
+</div>
+<p>➡️ Activates the environment so you can use FEniCS within it.</p>
+</section>
 <section id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
 <p>To install FEniCS on Windows, use <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a> and install the Ubuntu distribution. Then follow the instructions
@@ -106,18 +131,10 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w
 </pre></div>
 </div>
 </section>
-<section id="anaconda">
-<h3>Anaconda<a class="headerlink" href="#anaconda" title="Link to this heading"></a></h3>
-<p>Th use the prebuilt Anaconda Python package, run following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>fenics_env<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>fenics
-conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
-</pre></div>
-</div>
 </section>
-</section>
-<section id="running-the-test-ns-py-script">
-<h2>Running the <code class="docutils literal notranslate"><span class="pre">test_NS.py</span></code> Script<a class="headerlink" href="#running-the-test-ns-py-script" title="Link to this heading"></a></h2>
-<p>To run the <code class="docutils literal notranslate"><span class="pre">test_NS.py</span></code> script:</p>
+<section id="running-the-test-ns-py-and-test-rbm-py-script">
+<h2>▶️  Running the <code class="docutils literal notranslate"><span class="pre">test_ns.py</span></code> and <code class="docutils literal notranslate"><span class="pre">test_rbm.py</span></code> Script<a class="headerlink" href="#running-the-test-ns-py-and-test-rbm-py-script" title="Link to this heading"></a></h2>
+<p>To run the <code class="docutils literal notranslate"><span class="pre">test_ns.py</span></code> and <code class="docutils literal notranslate"><span class="pre">test_rbm.py</span></code> script:</p>
 <ol class="arabic">
 <li><p><strong>Activate your Conda environment (If Anaconda was used for installing)</strong>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
@@ -125,7 +142,7 @@ conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
 </div>
 </li>
 <li><p><strong>Run the script</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>./test_NS.py
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>./test_ns.py
 </pre></div>
 </div>
 </li>
@@ -152,7 +169,6 @@ conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.greedy.comp_greedyRB"><code class="docutils literal notranslate"><span class="pre">comp_greedyRB()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.find_Bl"><code class="docutils literal notranslate"><span class="pre">find_Bl()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.greedy_htype"><code class="docutils literal notranslate"><span class="pre">greedy_htype()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.plot_mu_trained"><code class="docutils literal notranslate"><span class="pre">plot_mu_trained()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.parameter.get_P"><code class="docutils literal notranslate"><span class="pre">get_P()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.comp_S"><code class="docutils literal notranslate"><span class="pre">comp_S()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.get_S"><code class="docutils literal notranslate"><span class="pre">get_S()</span></code></a></li>
