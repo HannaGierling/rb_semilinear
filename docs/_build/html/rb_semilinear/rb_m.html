@@ -97,10 +97,10 @@ snapshot matrix ‘S’, optionally w.r.t. mass matrix ‘M’</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>S</strong> (<em>np.array</em>) – Snapshot matrix with one snapshot per column</p></li>
+<li><p><strong>S</strong> (<em>np.ndarray</em>) – Snapshot matrix with one snapshot per column</p></li>
 <li><p><strong>N_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – maximum number of basis vectors</p></li>
 <li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Tolerance</p></li>
-<li><p><strong>M</strong> (<em>np.array</em><em>, </em><em>optional</em>) – mass matrix</p></li>
+<li><p><strong>M</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – mass matrix</p></li>
 <li><p><strong>folder</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – folder in which to save singular value plot and csv-file</p></li>
 <li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, displays the singular value plot, by default False</p></li>
 <li><p><strong>ret_sigma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, returns singular values in addition to reduced basis, by default False</p></li>
@@ -108,8 +108,8 @@ snapshot matrix ‘S’, optionally w.r.t. mass matrix ‘M’</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>V</strong> (<em>np.array</em>) – Matrix of POD modes</p></li>
-<li><p><strong>sigma</strong> (<em>np.array, optional</em>) – singular values - only returned if ‘ret_sigma’ is True.</p></li>
+<li><p><strong>V</strong> (<em>np.ndarray</em>) – Matrix of POD modes</p></li>
+<li><p><strong>sigma</strong> (<em>np.ndarray, optional</em>) – singular values - only returned if ‘ret_sigma’ is True.</p></li>
 </ul>
 </p>
 </dd>
