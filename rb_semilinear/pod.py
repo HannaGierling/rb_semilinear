@@ -14,13 +14,13 @@ def comp_POD(S:np.ndarray, N_max:int, tol:float,
 
     Parameters
     ----------
-    S : np.array
+    S : np.ndarray
         Snapshot matrix with one snapshot per column
     N_max : int
         maximum number of basis vectors
     tol : float
         Tolerance
-    M : np.array, optional
+    M : np.ndarray, optional
         mass matrix
     folder : str, optional
         folder in which to save singular value plot and csv-file
@@ -31,9 +31,9 @@ def comp_POD(S:np.ndarray, N_max:int, tol:float,
     
     Returns
     -------
-    V : np.array
+    V : np.ndarray
         Matrix of POD modes 
-    sigma : np.array, optional
+    sigma : np.ndarray, optional
         singular values - only returned if 'ret_sigma' is True.
     """
 
