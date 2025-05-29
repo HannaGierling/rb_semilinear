@@ -4,9 +4,14 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.13"
+    conda: "mambaforge"
 
-conda:
-  environment: environment.yml
+python:
+  install:
+    method: conda
+    environment: environment.yml
+    path: .
+    
 
 sphinx:
   configuration: docs/conf.py
