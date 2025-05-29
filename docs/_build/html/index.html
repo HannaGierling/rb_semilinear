@@ -152,11 +152,46 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html">Reduced Nonlinear Problem class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/sl_problems.html">Semilinear Problem classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_m.html">Methods for Reduced Basis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/nl_solver.html">Newton Solver Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/my_plots.html">Functions for various visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html">Reduced Nonlinear Problem class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_nl_problem.html#rb_semilinear.rb_nl_problem.MyRedNonlinearProblem"><code class="docutils literal notranslate"><span class="pre">MyRedNonlinearProblem</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/sl_problems.html">Semilinear Problem classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher"><code class="docutils literal notranslate"><span class="pre">Fisher</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher_mms"><code class="docutils literal notranslate"><span class="pre">Fisher_mms</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.MySemilinearProblem"><code class="docutils literal notranslate"><span class="pre">MySemilinearProblem</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Poisson"><code class="docutils literal notranslate"><span class="pre">Poisson</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.SemilinearPoisson"><code class="docutils literal notranslate"><span class="pre">SemilinearPoisson</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/rb_m.html">Methods for Reduced Basis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.pod.comp_POD"><code class="docutils literal notranslate"><span class="pre">comp_POD()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.greedy.comp_greedyRB"><code class="docutils literal notranslate"><span class="pre">comp_greedyRB()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.find_Bl"><code class="docutils literal notranslate"><span class="pre">find_Bl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.hgreedy.greedy_htype"><code class="docutils literal notranslate"><span class="pre">greedy_htype()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.parameter.get_P"><code class="docutils literal notranslate"><span class="pre">get_P()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.comp_S"><code class="docutils literal notranslate"><span class="pre">comp_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.get_S"><code class="docutils literal notranslate"><span class="pre">get_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.load_S"><code class="docutils literal notranslate"><span class="pre">load_S()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/rb_m.html#rb_semilinear.snapshots.plot_S"><code class="docutils literal notranslate"><span class="pre">plot_S()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/nl_solver.html">Newton Solver Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_simplDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_simplDamp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_adaptDamp"><code class="docutils literal notranslate"><span class="pre">MyNewton_adaptDamp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_nleqerr"><code class="docutils literal notranslate"><span class="pre">MyNewton_nleqerr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewton_ord"><code class="docutils literal notranslate"><span class="pre">MyNewton_ord</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/nl_solver.html#rb_semilinear.nl_solver.MyNewtonSolver"><code class="docutils literal notranslate"><span class="pre">MyNewtonSolver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rb_semilinear/my_plots.html">Functions for various visualizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.myPlot.myPlot"><code class="docutils literal notranslate"><span class="pre">myPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.convMap.convMap"><code class="docutils literal notranslate"><span class="pre">convMap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.errPlot.errPlot"><code class="docutils literal notranslate"><span class="pre">errPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.errRedSols.errRedSolsPlot"><code class="docutils literal notranslate"><span class="pre">errRedSolsPlot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/my_plots.html#rb_semilinear.my_plots.muTrainedPlot.plot_mu_trained"><code class="docutils literal notranslate"><span class="pre">plot_mu_trained()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 
