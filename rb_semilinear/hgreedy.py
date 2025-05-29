@@ -8,7 +8,6 @@ from rb_semilinear.snapshots import comp_S
 
 import os 
 import numpy as np
-import numpy.linalg as LA
 from typing import Literal
 import pandas as pd
 import matplotlib.pyplot as plt

@@ -38,7 +38,7 @@ homotopie       = False
 P_train_range   = [2.e-5,1]       # parameter range
 P_train_ns      = 50              # number of parameter samples
 P_train_random  = False           # random parameter selction
-P_train_opt     = "log"#_n_log"           # discr. strategy for param.space: 
+P_train_opt     = "log"           # discr. strategy for param.space: 
                                   # log","decade_log","lin","decade","lin_n_log"
 
 # --- get 'P_train' --- #
@@ -60,8 +60,8 @@ rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy :
                                     #   "u_h", "P","0","0.5" or "LP"
 
 # --- settings for parameter test space --- #
-P_test_range    = [0.003,0.005]#[2.1e-5, 0.89] # parameter range
-P_test_ns       = 80              # number of parameter samples
+P_test_range    = [2.1e-5, 0.89]  # parameter range
+P_test_ns       = 50              # number of parameter samples
 P_test_random   = False           # random parameter selction
 P_test_opt      = "log"           # discr. strategy for param.space: 
                                   #  "log","decade_log","lin","decade","P_train"
