@@ -1,0 +1,9 @@
+auf main branch:
+
+cd ./docs
+make html
+ghp-import -n -p -f _build/html
+
+ghp-import ist ein Tool, das automatisch den 
+HTML-Inhalt in den richtigen Branch pusht (gh-pages),
+für github pages.
