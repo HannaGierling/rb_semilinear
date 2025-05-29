@@ -7,7 +7,10 @@ build:
 
 python:
   install:
-    - path: docs/environment.yml
+    - path: docs/requirements.txt
+
+conda:
+  environment: docs/environment.yml
 
 sphinx:
   configuration: docs/conf.py
