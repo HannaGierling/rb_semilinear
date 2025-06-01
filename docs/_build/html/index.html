@@ -100,8 +100,8 @@ If you’re using <strong>Windows</strong>, you must install and use the <strong
 <h2>⬇️ Installing FEniCS<a class="headerlink" href="#installing-fenics" title="Link to this heading"></a></h2>
 <p>The following instructions are copied from <a class="reference external" href="https://fenicsproject.org/download/archive/">https://fenicsproject.org/download/archive/</a>.</p>
 <blockquote>
-<div><p>⚠️ Note:
-We used the Linux-Distribution Pop!_OS and <a class="reference external" href="https://www.anaconda.com/docs/getting-started/miniconda/install">Miniconda</a>.</p>
+<div><p>⚠️ Info:
+I used the Linux-Distribution Pop!_OS and <a class="reference external" href="https://www.anaconda.com/docs/getting-started/miniconda/install">Miniconda</a>.</p>
 </div></blockquote>
 <hr class="docutils" />
 <section id="anaconda">
@@ -132,6 +132,18 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w
 </div>
 </section>
 </section>
+<section id="further-requirements">
+<h2>⬇️ Further requirements<a class="headerlink" href="#further-requirements" title="Link to this heading"></a></h2>
+<p>Further requirements can be installed with the ‘requirements.txt’ file</p>
+<p>➡ Activate your virtual environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>fenics_env
+</pre></div>
+</div>
+<p>➡ Install requirements using pip</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
 <section id="running-the-test-ns-py-and-test-rbm-py-script">
 <h2>▶️  Running the <code class="docutils literal notranslate"><span class="pre">test_ns.py</span></code> and <code class="docutils literal notranslate"><span class="pre">test_rbm.py</span></code> Script<a class="headerlink" href="#running-the-test-ns-py-and-test-rbm-py-script" title="Link to this heading"></a></h2>
 <p>To run the <code class="docutils literal notranslate"><span class="pre">test_ns.py</span></code> and <code class="docutils literal notranslate"><span class="pre">test_rbm.py</span></code> script:</p>
@@ -157,8 +169,11 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rb_semilinear/sl_problems.html">Semilinear Problem classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.ACE"><code class="docutils literal notranslate"><span class="pre">ACE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Bratu"><code class="docutils literal notranslate"><span class="pre">Bratu</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher"><code class="docutils literal notranslate"><span class="pre">Fisher</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Fisher_mms"><code class="docutils literal notranslate"><span class="pre">Fisher_mms</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.LTE"><code class="docutils literal notranslate"><span class="pre">LTE</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.MySemilinearProblem"><code class="docutils literal notranslate"><span class="pre">MySemilinearProblem</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.Poisson"><code class="docutils literal notranslate"><span class="pre">Poisson</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rb_semilinear/sl_problems.html#rb_semilinear.sl_problems.SemilinearPoisson"><code class="docutils literal notranslate"><span class="pre">SemilinearPoisson</span></code></a></li>

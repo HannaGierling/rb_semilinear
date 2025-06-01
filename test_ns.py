@@ -35,7 +35,7 @@ N_hs                = [1000]                # number of intervals in spat.discr.
 maxit               = 100                   # max. number of iterations for NewtonSolver
 atol                = lambda N_h: 1/N_h**2  # tolerance for residual in NewtonSolver
 initGuess_strategy  = "P"                   # initial Guess strategy : "P","0","0.5" or "LP"
-homotopie           = True  
+homotopie           = False 
 
 # --- Select parameter values μ according to Section 5 of the thesis --- #
 # ----------

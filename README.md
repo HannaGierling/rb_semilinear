@@ -54,6 +54,19 @@ sudo apt-get update
 sudo apt-get install fenics
 ```
 
+## ⬇️ Further requirements
+Further requirements can be installed with the 'requirements.txt' file
+
+➡ Activate your virtual environment
+```bash
+conda activate fenics_env
+```
+➡ Install requirements using pip
+```bash
+pip install -r requirements.txt
+```
+
+
 ## ▶️  Running the `test_ns.py` and `test_rbm.py` Script
 
 To run the `test_ns.py` and `test_rbm.py` script:
