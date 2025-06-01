@@ -1,5 +1,7 @@
 auf main branch:
 
+benötigtes package für auto docs: sphinx -> pip install sphinx
+
 cd ./docs
 make html
 ghp-import -n -p -f _build/html
