@@ -1,7 +1,5 @@
 pandas
-os
 petsc4py
-matplotlip
+matplotlib
 numpy
 typing
-shutil
