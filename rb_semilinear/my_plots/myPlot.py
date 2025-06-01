@@ -56,7 +56,8 @@ def _filter_Mus(Mus_wanted:list[float], Mus_all:list[float],
 
 def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float], 
            converged_only:bool, 
-           plotfilename=None, plot=False):
+           plotfilename=None, plot=False,
+           csvfile = None):
     """
     Plots solutions for selected N and μ values in 'Ns_2plot' and 'Mus_2plot'. 
 
@@ -70,8 +71,6 @@ def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float],
         _description_
     converged_only : bool
         _description_
-    csvfilename : _type_, optional
-        _description_, by default None
     plotfilename : _type_, optional
         _description_, by default None
 
@@ -81,12 +80,13 @@ def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float],
         raise FileNotFoundError(f"'mapping.log' not found in path {path}")
 
     df = pd.read_csv("%s/mapping.log"%(path), sep=r'\s+', engine='python')
-    Mus_all = df['μ'].unique().tolist()
 
     for N in Ns_2plot:
         dfN = df[df['N'] == N]
         if dfN.empty:
             continue
+
+        Mus_all = dfN['μ'].unique().tolist()
 
         conv_all = dfN['converged'].tolist()
         ids_MusFound, MusFound, convs_MusFound = _filter_Mus(Mus_2plot,Mus_all,
@@ -99,11 +99,21 @@ def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float],
         if S.ndim == 1 and len(MusFound) == 1:
             plt.plot(x, S, label=f"μ={MusFound[0]:.3e}, conv={convs_MusFound[0]}")
             plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
+            plt.legend()
         else:
             S = S[:, ids_MusFound]
             [plt.plot(x, S[:, i], label=f"μ={MusFound[i]:.3e}," +\
                     f"conv={convs_MusFound[i]}") for i in range(len(MusFound))]
             plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
+            plt.legend()
+    
+    if csvfile is not None:
+        os.makedirs(os.path.dirname(csvfile), exist_ok=True)
+        header = {f"mu={MusFound[i]:.2e}":S[::10,i] for i in range(len(MusFound))}
+        header.update({"x":x[::10]})
+        df = pd.DataFrame(header)
+        df.to_csv(csvfile, mode="w", header=True, sep=',', 
+                    index=False, float_format='%.12e')
 
     if plotfilename is not None:
         plt.savefig(f"{path}/{plotfilename}")

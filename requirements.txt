@@ -1,0 +1,7 @@
+pandas
+os
+petsc4py
+matplotlip
+numpy
+typing
+shutil

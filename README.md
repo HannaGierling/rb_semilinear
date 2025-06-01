@@ -25,8 +25,8 @@ This project uses [FEniCS](https://fenicsproject.org/), so please make sure it i
 ## ⬇️ Installing FEniCS
 The following instructions are copied from [https://fenicsproject.org/download/archive/](https://fenicsproject.org/download/archive/).
 
-> ⚠️ Note: 
-> We used the Linux-Distribution Pop!_OS and [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install).
+> ⚠️ Info: 
+> I used the Linux-Distribution Pop!_OS and [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install).
 ---
 
 ### Anaconda

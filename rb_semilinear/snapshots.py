@@ -107,6 +107,8 @@ def comp_S(problem:MySemilinearProblem,
         
         if problem.solver.parameters['report']==False:
             print("| ", end="" if idMu < len(P_train)-1 else "\n")
+        
+        problem.initGuess_strategy = None
 
     S = np.array(S).T
     S_conv = np.array(S_conv).T

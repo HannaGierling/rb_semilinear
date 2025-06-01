@@ -384,6 +384,7 @@ class MyRedNonlinearProblem(NonlinearProblem):
         #b.init(len(F_))
 
         b.set_local(F_)
+        self.resNorm = norm(b)
 
     def solve(self, mu:float):
         """
@@ -408,6 +409,9 @@ class MyRedNonlinearProblem(NonlinearProblem):
         when instantiating a 'MyRedNonlinearProblem' object.
         It can be changed by modifying 'self.initGuess_strategy'.
         """
+
+        if self.proj_norm == None:
+            raise Exception("You have to set 'MyRedNonlinearProblem.proj_norm' to either '2-norm' or 'L2-norm' first!")
 
         self.hnl_problem.set_mu(mu)
         self.set_initGuess_rbc(self.initGuess_strategy)

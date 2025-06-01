@@ -108,9 +108,13 @@ def comp_greedyRB(S: np.ndarray,
         #P_ids_used.append(id_muN) 
 
         # --- select μ with max. projection error --- #
-        errors = [_proj_error(S[:,id], np.array(V).T,M) for id in range(len(Ps))]
-        id_muN, eps = max(enumerate(errors), key=lambda x: x[1])
-        muN = Ps[id_muN]
+        if N < N_max_bar-1:
+            errors = [_proj_error(S[:,id], np.array(V).T,M) for id in range(len(Ps))]
+            id_muN, eps = max(enumerate(errors), key=lambda x: x[1])
+            muN = Ps[id_muN]
+        else:
+            eps = 0
+            muN = np.nan
 
         N += 1
     

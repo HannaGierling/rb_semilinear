@@ -1,8 +1,8 @@
 from fenics import * 
 from typing import Literal, Any, Callable
+import numpy as np
 
 from rb_semilinear.nl_solver import MyNewtonSolver 
-
 
 class MySemilinearProblem(NonlinearProblem):
     """
@@ -495,3 +495,26 @@ class Poisson(MySemilinearProblem):
         MySemilinearProblem.__init__(self,N_h, q, Expression("0", degree=0), 
                                      self.u_D, solver, None)
  
+
+class Bratu(MySemilinearProblem):
+    def __init__(self, N_h:int, solver:MyNewtonSolver, 
+                 initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
+        q = lambda u: np.e**u
+        self.u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
+        MySemilinearProblem.__init__(self,N_h, q, Expression("0", degree=0), 
+                                     self.u_D, solver, initGuess_strategy)
+
+class ACE(MySemilinearProblem):
+    def __init__(self, N_h:int, solver:MyNewtonSolver, 
+                 initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
+        q = lambda u: -u**3 + u
+        self.u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
+        MySemilinearProblem.__init__(self,N_h, q, Expression("0", degree=0), 
+                                     self.u_D, solver, initGuess_strategy)
+class LTE(MySemilinearProblem):
+    def __init__(self, N_h:int, solver:MyNewtonSolver, 
+                 initGuess_strategy:Literal["P", "0.5", "0", "LP", None]):
+        q = lambda u: - u*(1-u/2)
+        self.u_D = Expression('x[0]<0.5 ? a : b',a=-0.1,b=0.4,degree=1)
+        MySemilinearProblem.__init__(self,N_h, q, Expression("0", degree=0), 
+                                     self.u_D, solver, initGuess_strategy)

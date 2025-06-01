@@ -7,37 +7,55 @@ from rb_semilinear.utils import appendDict, str2pathstr, w2file
 from rb_semilinear.nl_solver import MyNewtonSolver
 from rb_semilinear.my_plots import convMap, myPlot, errPlot
 from rb_semilinear.parameter import get_P
-from rb_semilinear.sl_problems import Fisher, Fisher_mms, SemilinearPoisson
+from rb_semilinear.sl_problems import Fisher, Fisher_mms, SemilinearPoisson, Bratu,ACE,LTE, MySemilinearProblem
 
-testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson}
+testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson, 
+                "Bratu":Bratu, "ACE":ACE, "LTE":LTE}
 
 #----- SETTINGS ---------------------------------------------------------------#
+""" 
+!INFO: for solver validation use 
+    N_hs = [50, 100, 200, 500, 1000, 2000, 3000, 5000, 6000, 7000]
+in combination with test_problem = "mmsF" and Ps = [0.5]
+"""
 
 # --- selcect test problem --- #       
 test_problem        = "F"                   # "F","mmsF" or "slP"
 
 # --- settings for solver --- #       
 solver_type         = "nleqerr"             # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
-
 N_hs                = [1000]                # number of intervals in spat.discr.
-# !INFO: for solver validation use 
-# N_hs = [50, 100, 200, 500, 1000, 2000, 3000, 5000, 6000, 7000]
-#   in combination with test_problem = "mmsF" and Ps = [0.5]
-
 maxit               = 100                   # max. number of iterations for NewtonSolver
 atol                = lambda N_h: 1/N_h**2  # tolerance for residual in NewtonSolver
-initGuess_strategy  = "0.5"                 # initial Guess strategy : "P","0","0.5" or "LP"
+initGuess_strategy  = "P"                   # initial Guess strategy : "P","0","0.5" or "LP"
+homotopie           = False 
 
-# --- parameter --- #
-P_range = [1.e-5,1]                         # parameter range
 # --- Select parameter values μ according to Section 5 of the thesis --- #
+P_range = [1.e-5,1]                         # parameter range
 P_discr_strategy = "thesis"
-Ps = get_P(P_range, P_discr_strategy)        # use [0.5] for solver validation
-#------------------------------------------------------------------------------#
+Ps = get_P(P_range, P_discr_strategy)       # use [0.5] for solver validation
 
+# --- Select parameter values μ according to Section 7 of the thesis --- #
+P_range = [1.10e-02,2.1e-2]
+
+#P_range = [0.072455,1]
+#P_range = [0.016,   0.07245]
+#P_range = [2e-5, 0.018]
+P_ns = 14
+
+#P_range = [2e-5,8e-4]
+#P_ns = 250
+
+#P_range = [2e-5,9e-5]
+#P_ns = 150
+
+Ps = get_P(P_range,"log",P_ns)
+Ps = Ps[::-1]
+
+#------------------------------------------------------------------------------#
 # --- folder path --- #
 problemfolder = str2pathstr(f"{test_problem}/{P_discr_strategy}") 
-solverfolder = str2pathstr(f"{initGuess_strategy}/{solver_type}")
+solverfolder = str2pathstr(f"{initGuess_strategy}{'_homot'if homotopie else '' }/{solver_type}")
 folder       = f"{os.path.dirname(__file__)}/test_ns/"+\
                 f"{problemfolder}/{solverfolder}"
 
@@ -52,7 +70,7 @@ for idN, N_h in enumerate(N_hs):
     solver = MyNewtonSolver(tol=atol(N_h), maxit=maxit, report=True, 
                             solver_type=solver_type)
     # --- high-fidelity Problem --- #
-    problem = testproblems[test_problem](N_h=N_h, solver=solver,
+    problem:MySemilinearProblem = testproblems[test_problem](N_h=N_h, solver=solver,
                                          initGuess_strategy=initGuess_strategy)
 
     for idMU, mu in enumerate(Ps):
@@ -68,6 +86,13 @@ for idN, N_h in enumerate(N_hs):
         # --- log infos of Newton iterations --- #
         w2file(f"{folder}/NitInfos.log", f"μ={mu}, N={N_h}", mode="w" if idMU==0 else "a")
         w2file(f"{folder}/NitInfos.log", pd.DataFrame(NitInfo).to_string())
+        
+        # - to use previous solution as init Guess:
+        if homotopie == True:
+            if SolInfo["converged"] == 1:
+                problem.initGuess_strategy = None
+            else :
+                problem.initGuess_strategy = initGuess_strategy
 
 
     # --- save solutions and spatial coordinates --- #
@@ -94,7 +119,8 @@ if test_problem=="mmsF" and len(N_hs)>5 and len(Ps)==1:
     errPlot(folder, Ps[0], plot = True)
 
 # --- plot converged solutions --- #
-for N in N_hs[-2:-1]:
-    myPlot(folder, Ns_2plot=[N_h], Mus_2plot=Ps, converged_only=True , 
-           plotfilename=f"{N_h}.png", plot=True)
+for N in N_hs:
+    myPlot(folder, Ns_2plot=[N_h], Mus_2plot=Ps, converged_only=True, 
+           plotfilename=f"{N_h}.png", plot=True, 
+           csvfile=f"{folder}/sols.csv")
 
