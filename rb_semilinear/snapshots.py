@@ -73,6 +73,7 @@ def load_S(P_train:np.ndarray, N_h:int,S_folder:str, plot:bool = False):
 
 def comp_S(problem:MySemilinearProblem, 
            P_train:np.ndarray, 
+           homotopie:bool = False,
            folder:str=None, plot:bool = False):
 
     S = []
@@ -83,6 +84,8 @@ def comp_S(problem:MySemilinearProblem,
     if folder is not None:
         import os
         os.makedirs(f"{folder}", exist_ok=True)
+
+    initGuessStrategy = problem.initGuess_strategy
 
     if problem.solver.parameters['report']==False:
         print("computing snapshots:", end=" ")
@@ -108,7 +111,13 @@ def comp_S(problem:MySemilinearProblem,
         if problem.solver.parameters['report']==False:
             print("| ", end="" if idMu < len(P_train)-1 else "\n")
         
-        problem.initGuess_strategy = None
+        if homotopie:
+            if SolInfo["converged"] == 1:
+                problem.initGuess_strategy = None
+            else:
+                problem.initGuess_strategy = initGuessStrategy
+
+    problem.initGuess_strategy = initGuessStrategy
 
     S = np.array(S).T
     S_conv = np.array(S_conv).T
@@ -141,17 +150,18 @@ def comp_S(problem:MySemilinearProblem,
 def get_S(P_train:np.ndarray,
           hf_problem:MySemilinearProblem, 
           S_folder:str,
+          homotopie:bool = False,
           plot:bool = False):
 
     N_h = hf_problem.N_h
     import os
     if not os.path.exists(S_folder) \
             or not os.path.exists(f"{S_folder}/S_{hf_problem.N_h}.csv"):
-        return comp_S(hf_problem, P_train, S_folder, plot)
+        return comp_S(hf_problem, P_train, homotopie, S_folder, plot)
 
     Ps = np.loadtxt(f"{S_folder}/P_train.csv",delimiter=',', encoding='utf-8')
     for mu in P_train:
         if not float_is_in(mu, Ps):
-            return comp_S(hf_problem, P_train, S_folder, plot)
+            return comp_S(hf_problem, P_train, homotopie, S_folder, plot)
 
     return load_S(P_train,hf_problem.N_h,S_folder, plot=plot)

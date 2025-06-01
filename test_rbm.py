@@ -17,9 +17,14 @@ from rb_semilinear.my_plots import plot_mu_trained, convMap, myPlot, errRedSolsP
 
 testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson}
 
+# !!!!
+# INFO: solutions, infos, plots, RBs, etc. get saved in folder 'test_rbm'
+# !!!!!!!
+
 #----- SETTINGS ---------------------------------------------------------------#
 
 # --- select test problem --- #
+# ----------
 test_problem    = "F"             # "F","mmsF" or "slP"
 
 #------------------#
@@ -27,41 +32,50 @@ test_problem    = "F"             # "F","mmsF" or "slP"
 #------------------#
 
 # --- settings for solver --- #       
+# ----------
 N_h             = 1000            # number of intervals in spat.discr.
 solver_opt      = "nleqerr"       # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
 hf_Rtol         = 1/N_h**2        # tolerance for residual in NewtonSolver
 hf_maxit        = 100             # max. number of iterations for NewtonSolver
 hf_initGuess_opt = "P"              # initial Guess strategy : "P","0","0.5" or "LP"
-homotopie       = False 
-
-# --- settings for parameter training space --- #
-P_train_range   = [2.e-5,0.02]#1]       # parameter range
-P_train_ns      = 50             # number of parameter samples
-P_train_random  = False           # random parameter selction
-P_train_opt     = "log"           # discr. strategy for param.space: 
-                                  # log","decade_log","lin","decade","lin_n_log"
-
-# --- get 'P_train' --- #
-P_train  = get_P(P_train_range, P_train_opt, P_train_ns, P_train_random)
-P_train = P_train[::-1]
+homotopie       = True 
 
 #------------------#
 ### rb: settings ###       
 #------------------#
 
+# --- settings for solver --- #
+# ----------
+rb_solver_opt   = "nleqerr"       # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
+rb_Rtol         = 10/N_h**2       # tolerance for residual in NewtonSolver
+rb_maxit        = 100             # max. number of iterations for NewtonSolver
+rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy : 
+                                    # "u_h", "0", "0.5", "P"
+ 
+# --- settings for parameter training space --- #
+# ----------
+P_train_range   = [2.e-5,1]       # parameter range
+#P_train_range   = [2e-5,8e-4]     # fourth branch
+P_train_ns      = 250              # number of parameter samples
+P_train_random  = False           # random parameter selction
+P_train_opt     = "log"           # discr. strategy for param.space: 
+                                  # log","decade_log","lin","decade","lin_n_log"
+
+# --- get 'P_train' --- #
+# ----------
+P_train  = get_P(P_train_range, P_train_opt, P_train_ns, P_train_random)
+P_train = P_train[::-1]                                   #   "u_h", "P","0","0.5" or "LP"
+
 # --- settings for constr. of RB --- #
+# ----------
 RB_opt          = "Greedy"        # RB generation : "POD_L2","POD_2","Greedy","htype_Greedy"
 RB_tol          = 10/N_h**2       # tolerance for either POD or Greedy
 RB_N_max        = P_train_ns      # max. number of RB-functions
 
-# --- settings for solver --- #
-rb_Rtol         = 10/N_h**2       # tolerance for residual in NewtonSolver
-rb_maxit        = 100             # max. number of iterations for NewtonSolver
-rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy : 
-                                    #   "u_h", "P","0","0.5" or "LP"
-
 # --- settings for parameter test space --- #
-P_test_range    = [2.1e-5, 0.02]#0.89]  # parameter range
+# ----------
+P_test_range    = [2.1e-5, 0.89]  # parameter range
+#P_test_range    = [2.1e-5, 7.9e-4]# fourth branch
 P_test_ns       = 50              # number of parameter samples
 P_test_random   = False           # random parameter selction
 P_test_opt      = "log"           # discr. strategy for param.space: 
@@ -74,7 +88,7 @@ only_hf = False
 ################################################################################
 
 folder = str2pathstr(f"{os.path.dirname(__file__)}/"+\
-         f"test_rbm/{test_problem}/Nh_{N_h}/{hf_initGuess_opt}_{solver_opt}/"+\
+         f"test_rbm/{test_problem}/Nh_{N_h}/{hf_initGuess_opt}{'_homot'if homotopie else '' }_{solver_opt}/"+\
          f"Ptrain_{P_train_opt}{P_train_ns}\
               {'random' if P_train_random==True else ''}")
 
@@ -86,7 +100,7 @@ hf_problem:MySemilinearProblem = testproblems[test_problem](N_h=N_h, solver=solv
 
 # --- get snapshot matrix 'S' --- #
 S_folder   = f"{folder}/snapshots"
-S, x, P_conv    = get_S(P_train, hf_problem, S_folder, plot=True)
+S, x, P_conv    = get_S(P_train, hf_problem, S_folder, homotopie, plot=True)
                               
 ################################################################################
 ################### Reduced basis method #######################################
@@ -123,7 +137,7 @@ if only_hf == False:
                       f"{P_test_ns}{'random' if P_test_random==True else ''}"
 
 # --- define reduced problem --- #
-    rb_solver = MyNewtonSolver(rb_Rtol, rb_maxit, True, "nleqerr")
+    rb_solver = MyNewtonSolver(rb_Rtol, rb_maxit, True, rb_solver_opt)
     rb_problem = MyRedNonlinearProblem(hf_problem, RB, rb_solver, rb_initGuess_opt)
     rb_problem.proj_norm = "2-norm" if RB_opt == "POD_2" else "L2-norm"
 
@@ -132,24 +146,33 @@ if only_hf == False:
         P_test = P_conv
     else:
         P_test = get_P(P_test_range, P_test_opt, P_test_ns, P_test_random)
-        P_test = P_test[::-1]
+
+# --- special preparation for case homotopie==True --- #
+    if homotopie:
+        from rb_semilinear.snapshots import comp_S
+        hf_problem.initGuess_strategy = hf_initGuess_opt
+        P_test = get_P(P_test_range, P_test_opt, P_train_ns, P_test_random)
+        S_test, x, P_conv_test = comp_S(hf_problem, P_test[::-1], True, 
+                                        S_folder, plot=True)
+        P_test = P_conv_test
+        P_test_opt = "S_test"
+        rb_initGuess_opt = "S[m]"
 
 # --- test reduced problem for µ in 'P_test' --- #
     mapping = {}
     #vtkfile_sol_N = File('%s/vtk/sol.pvd' %rb_folder)
     S_N = np.zeros((N_h+1, len(P_test)))
 
-    from rb_semilinear.snapshots import comp_S
-    hf_problem.initGuess_strategy = "P"
-    S, x, P_conv = comp_S(hf_problem,P_test, S_folder, plot=True)
-    P_test_opt = "P_train"
-    rb_initGuess_opt ="u_h"
     for idMU, mu in enumerate(P_test):
 
         # ---  compute high-fidelity solution 'u_h' for error-analysis --- #
         if P_test_opt == "P_train":
             u_h = Function(hf_problem.V_h)
             u_h.vector().set_local(S[:,idMU])
+        # for homotopie: 
+        elif P_test_opt == "S_test":
+            u_h = Function(hf_problem.V_h)
+            u_h.vector().set_local(S_test[:,idMU])
         else:
             print(f"\nsolve hf-problem for µ={mu}")
             SolInfo, NitInfo = hf_problem.solve(mu)
@@ -162,15 +185,27 @@ if only_hf == False:
             if u_h == None: continue
             rb_problem.initGuess_strategy = None
             V_h = hf_problem.V_h
-            M = assemble(inner(TrialFunction(V_h),TestFunction(V_h))*dx).array()
-            rb_problem.u_rbc.set_local(RB.T @ M @ S[:,20])#u_h.vector().get_local())
-            plot(rb_problem.u_N(), label="u_rbc_init")
+            if RB_opt == "POD_2":
+                rb_problem.u_rbc.set_local(RB.T @ u_h.vector().get_local())
+            else:
+                M = assemble(inner(TrialFunction(V_h),TestFunction(V_h))*dx).array()
+                rb_problem.u_rbc.set_local(RB.T @ M @ u_h.vector().get_local())
+            #plot(rb_problem.u_N(), label="u_rbc_init")
+
+        # - for homotopie:
+        elif rb_initGuess_opt == "S[m]":
+            rb_problem.initGuess_strategy = None
+            V_h = hf_problem.V_h
+            if RB_opt == "POD_2":
+                rb_problem.u_rbc.set_local(RB.T @ S[:,0])
+            else:
+                M = assemble(inner(TrialFunction(V_h),TestFunction(V_h))*dx).array()
+                rb_problem.u_rbc.set_local(RB.T @ M @ S[:,int(P_train_ns/2)])
+            #plot(rb_problem.u_N(), label="u_rbc_init")
 
         # --- solve rb-problem for 'mu' --- #
         print(f"\nsolve rb-problem for µ={mu}")
         SolInfo, NitInfo = rb_problem.solve(mu)
-
-        rb_problem.initGuess_strategy = None
 
         # --- error analysis --- #
         SolInfo.update(rb_problem.errornorms(u_h))#, proj_norm="L2-norm"))
@@ -189,7 +224,7 @@ if only_hf == False:
         plot(rb_problem.u_N(), label=f"µ={mu:.3e}, conv={SolInfo['converged']}")
         if u_h is not None :plot(u_h, label="u_h") 
         plt.legend(); plt.ylim([-0.8,0.8])
-        plt.show()
+        #plt.show()
 
     plt.title("Reduced Solutions"); plt.xlabel("x"); plt.ylabel(r"$u_N(\mu)$")
     plt.legend(); plt.show()

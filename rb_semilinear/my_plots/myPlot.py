@@ -107,10 +107,10 @@ def myPlot(path:str, Ns_2plot:list[int], Mus_2plot:list[float],
             plt.title("Solutions"); plt.xlabel("x"); plt.ylabel("u(μ)")
             plt.legend()
     
-    if csvfile is not None:
+    if csvfile is not None and S.ndim > 1:
         os.makedirs(os.path.dirname(csvfile), exist_ok=True)
-        header = {f"mu={MusFound[i]:.2e}":S[::10,i] for i in range(len(MusFound))}
-        header.update({"x":x[::10]})
+        header = {f"mu={MusFound[i]:.2e}":S[:,i] for i in range(len(MusFound))}
+        header.update({"x":x})
         df = pd.DataFrame(header)
         df.to_csv(csvfile, mode="w", header=True, sep=',', 
                     index=False, float_format='%.12e')

@@ -12,6 +12,10 @@ from rb_semilinear.sl_problems import Fisher, Fisher_mms, SemilinearPoisson, Bra
 testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson, 
                 "Bratu":Bratu, "ACE":ACE, "LTE":LTE}
 
+# !!!!
+# INFO: solutions, infos, plots, etc. get saved in folder 'test_ns'
+# !!!!!!!
+
 #----- SETTINGS ---------------------------------------------------------------#
 """ 
 !INFO: for solver validation use 
@@ -20,37 +24,44 @@ in combination with test_problem = "mmsF" and Ps = [0.5]
 """
 
 # --- selcect test problem --- #       
+# ----------
 test_problem        = "F"                   # "F","mmsF" or "slP"
 
 # --- settings for solver --- #       
+# ----------
 solver_type         = "nleqerr"             # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
 N_hs                = [1000]                # number of intervals in spat.discr.
+#N_hs = [50, 100, 200, 500, 1000, 2000, 3000, 5000, 6000, 7000]
 maxit               = 100                   # max. number of iterations for NewtonSolver
 atol                = lambda N_h: 1/N_h**2  # tolerance for residual in NewtonSolver
 initGuess_strategy  = "P"                   # initial Guess strategy : "P","0","0.5" or "LP"
-homotopie           = False 
+homotopie           = True  
 
 # --- Select parameter values μ according to Section 5 of the thesis --- #
+# ----------
 P_range = [1.e-5,1]                         # parameter range
 P_discr_strategy = "thesis"
 Ps = get_P(P_range, P_discr_strategy)       # use [0.5] for solver validation
+#Ps = [0.5]
+
 
 # --- Select parameter values μ according to Section 7 of the thesis --- #
-P_range = [1.10e-02,2.1e-2]
-
-#P_range = [0.072455,1]
-#P_range = [0.016,   0.07245]
-#P_range = [2e-5, 0.018]
-P_ns = 14
-
-#P_range = [2e-5,8e-4]
+# ----------
+#P_range = [1.10e-02,2.1e-2] # critical region
+#P_ns = 14
+#P_range = [2e-5, 1]         # first branch
+#P_ns = 14
+#P_range = [2e-5, 0.07245]   # second branch
+#P_ns = 42
+#P_range = [2e-5, 0.0141]    # "third branch"
+#P_ns = 14
+#P_range = [2e-5,8e-4]      # fourth branch
 #P_ns = 250
-
-#P_range = [2e-5,9e-5]
+#P_range = [2e-5,9e-5]      # fifth branch
 #P_ns = 150
 
-Ps = get_P(P_range,"log",P_ns)
-Ps = Ps[::-1]
+#Ps = get_P(P_range,"log",P_ns)
+#Ps = Ps[::-1]
 
 #------------------------------------------------------------------------------#
 # --- folder path --- #
@@ -110,6 +121,7 @@ except:
     df = df.astype({'nit':'int32', 'converged':'int32', 'N':'int32'})
 df['μ'] = df['μ'].map(lambda x: f"{x:.12e}")
 w2file(f"{folder}/mapping.log", df.to_string(), "w")
+print(df.to_string())
 
 # --- plot convergence mapping --- #
 convMap(folder, plot=True)
@@ -119,8 +131,7 @@ if test_problem=="mmsF" and len(N_hs)>5 and len(Ps)==1:
     errPlot(folder, Ps[0], plot = True)
 
 # --- plot converged solutions --- #
-for N in N_hs:
-    myPlot(folder, Ns_2plot=[N_h], Mus_2plot=Ps, converged_only=True, 
-           plotfilename=f"{N_h}.png", plot=True, 
-           csvfile=f"{folder}/sols.csv")
+myPlot(folder, Ns_2plot=[N_hs[-1]], Mus_2plot=Ps, converged_only=True, 
+        plotfilename=f"{N_h}.png", plot=True, 
+        csvfile=f"{folder}/sols.csv")
 

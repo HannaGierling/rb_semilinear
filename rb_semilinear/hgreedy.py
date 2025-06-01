@@ -87,13 +87,7 @@ def _get_amu(Bl:str, folder:str):
          f"if you want to build a new RB, you might have to delete {folder}")
 
     return tmp['amu'].iloc[0]
-    try:
-        ret = tmp['amu'].iloc[1]
-        print("\n\n!!!!!!!!!!!!!!!!!! 1 !!!!!!!!!\n\n")
-        return ret
-    except:
-        #print("\n\n!!!!!!!!!!!!!!!!!! 0 !!!!!!!!!\n\n")
-        return tmp['amu'].iloc[0]
+
 
 def _find_Bl(mu:float, Bl:str, folder:str, proximity_opt:Literal["lin", "log"]):
     """
@@ -189,8 +183,7 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
 
     # --- check error tolerance --- #
     if max(errors_Bl) < eps_tol1:
-        # --- safe anchor μ_(Bl,0)=μ_(Bl,1)=0 for termination criterion --- #
-        w2file(f"{folder}/amus.log", {"Bl": [Bl], "amu":[P_Bl_train[0]+abs(P_Bl_train[-1]-P_Bl_train[0])/2]}, mode="a")
+        # --- safe anchor μ_(Bl,0)=μ_(Bl,1)=nan for termination criterion --- #
 
         w2file(f"{folder}/amus.log", {"Bl": [Blp0], "amu":[np.nan]}, mode="a")
         w2file(f"{folder}/amus.log", {"Bl": [Blp1], "amu":[np.nan]}, mode="a")
@@ -198,41 +191,24 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
 
     else:
         # --- delete parent domain --- #
-        #shutil.rmtree(f"{folder}/{Bl}", ignore_errors=True)
-        shutil.rmtree(f"{folder}/{Bl}/S.csv", ignore_errors=True)
-        shutil.rmtree(f"{folder}/{Bl}/RB_Greedy.csv", ignore_errors=True)
+        shutil.rmtree(f"{folder}/{Bl}", ignore_errors=True)
 
         # --- select and safe new anchor μs --- #
-        amu_Blp0 = min(amu_1,M_Bl[1])
-        amu_Blp1 = max(amu_1,M_Bl[1])
-        #amu_Blp0 = amu_1
-        #amu_Blp1 = M_Bl[1]
+        amu_Blp0 = amu_1
+        amu_Blp1 = M_Bl[1]
         w2file(f"{folder}/amus.log", {"Bl": [Blp0], "amu":[amu_Blp0]}, mode="a")
         w2file(f"{folder}/amus.log", {"Bl": [Blp1], "amu":[amu_Blp1]}, mode="a")
 
         # --- select training parameter sets for new leaf nodes --- #
         Ps_Blp0 = [];          Ps_Blp1= []
-
-        # entweder:
-        # ----------
         Ps_Bl_tilde = get_P([P_Bl_train[0],P_Bl_train[-1]], 
                              P_discr_opt, 2*len_P_1)
-                             #P_discr_opt, 2*len(P_Bl_train))
         opt = P_discr_opt
         for mu in Ps_Bl_tilde:
             if _proximity(amu_Blp0, mu, opt) <= _proximity(amu_Blp1, mu, opt):
                 Ps_Blp0.append(mu)
             else:
                 Ps_Blp1.append(mu)
-        # oder :
-        # -------
-#        e0 = np.log10(amu_Blp0)
-        #e1 = np.log10(amu_Blp1)
-        #amu_m = 10**(min(e1,e0)+ abs(e1-e0)/2)
-        #Ps_Blp0 = get_P([P_Bl_train[0],amu_m],"log",int(1*len(P_Bl_train)), endpoint=False)
-        #Ps_Blp1 = get_P([amu_m,P_Bl_train[-1]],"log",int(1*len(P_Bl_train)), endpoint=True)
-        # ende
-        # ---------
 
         # --- plot selected parameter values ---- #
         plt.scatter(Ps_Blp0, int(Blp0)*np.ones_like(Ps_Blp0), c='red')
@@ -267,6 +243,7 @@ def _greedy_htype(hf_problem:MySemilinearProblem,   # high-fidelity problem
 # --- h-type greedy algorithm (recursive function) --- #
 def greedy_htype(hf_problem:MySemilinearProblem,    # high-fidelity problem
                  P_train:np.ndarray,                 # training parameter samples
+                 amu_1:float,                       # initial anchor parameter
                  eps_tol1:float,                    # error tolerance
                  N_bar:int,                         # max. N per leaf node
                  folder:str,                        # folder path
@@ -282,9 +259,9 @@ def greedy_htype(hf_problem:MySemilinearProblem,    # high-fidelity problem
 
     Anchor points with corresponding Boolean Vector Bl are stored in file 'amus.log' in folder 'folder'. 
 
-    The reduced basis and corresponding models are stored in files 'V.csv' 
-    and 'P_used.csv' in a folder named after the corresponding Boolean Vector 
-    in in the folder 'folder'.
+    The reduced basis and corresponding models are stored in files 'RB_Greedy.csv' 
+    and 'P_used.csv' in a folder named after the corresponding Boolean Vector. 
+    This folder is located in the folder 'folder'.
 
     Parameters
     ----------
@@ -327,9 +304,7 @@ def greedy_htype(hf_problem:MySemilinearProblem,    # high-fidelity problem
     # --- length of initial parmaeter set --- #
     len_P_1 = len(P_train)
 
-    # --- select and safe first anchor parameter μ_1 --- #
-    #amu_1 = P_train[0]
-    amu_1 = P_train[int(0.3*len(P_train))]
+    # --- safe first anchor parameter μ_1 --- #
     w2file(f"{folder}/amus.log", {"Bl": ["1"], "amu":[amu_1]}, mode="w", 
            float_format = "%.12e")
 

@@ -15,6 +15,10 @@ import matplotlib.pyplot as plt
 
 testproblems = {"mmsF":Fisher_mms, "F":Fisher, "slP":SemilinearPoisson}
 
+# !!!!
+# INFO: models, solutions, infos, plots, etc. get saved in folder 'test_hgreedy'
+# !!!!!!!
+
 #----- SETTINGS ---------------------------------------------------------------#
 
 # --- select test problem --- #
@@ -25,35 +29,45 @@ test_problem    = "F"             # "F","mmsF" or "slP"
 #------------------#
 
 # --- settings for solver --- #       
+# ----------
 N_h             = 1000            # number of intervals in spat.discr.
 solver_opt      = "nleqerr"       # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
 hf_Rtol         = 1/N_h**2        # tolerance for residual in NewtonSolver
 hf_maxit        = 100             # max. number of iterations for NewtonSolver
-hf_initGuess_opt = "P"              # initial Guess strategy : "P","0","0.5" or "LP"
-homotopie       = False 
+hf_initGuess_opt = "0.5"            # initial Guess strategy : "P","0","0.5" or "LP"
 
 #------------------#
 ### rb: settings ###       
 #------------------#
 
 # --- settings for parameter training space --- #
-P_train_range   = [5.e-5,1]       # parameter range
+# ----------
+P_train_range   = [2.e-5,1]       # parameter range used for F_05 in thesis
+#P_train_range   = [5.e-5,1]       # parameter range used for F_P in thesis
 
 # --- settings for constr. of RB --- #
-RB_tol          = 100/N_h**2
-RB_N_max        = 15  
+# ----------
+RB_tol          = 10/N_h**2
+RB_N_max        = 5  
 P_1_discr_opt   = "log"
-P_1_ns          = 50
+P_1_ns          = 20
 P_Bl_discr_opt  = "log"
 
+P_1_train       = get_P(P_train_range, P_1_discr_opt, P_1_ns)
+amu_1 = P_1_train[-1]                             # used for F_05 in thesis
+#amu_1 = P_1_train[int(0.3*len(P_1_train))]      # used for F_P in thesis
+
 # --- settings for solver --- #
-rb_Rtol         = 100/N_h**2       # tolerance for residual in NewtonSolver
+# ----------
+rb_Rtol         = 10/N_h**2       # tolerance for residual in NewtonSolver
 rb_maxit        = 100             # max. number of iterations for NewtonSolver
-rb_initGuess_opt = "u_h"     #hf_initGuess_opt # initial Guess strategy : 
-                                    # "u_h(amu)","P","0","0.5" or "LP"
+rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy : 
+                                    # "u_h", "u_h(amu)","P","0","0.5" or "LP"
 
 # --- settings for parameter test space --- #
-P_test_range    = [5.1e-5, 0.89] # parameter range
+# ----------
+P_test_range    = [2.1e-5, 0.89] # parameter range used for F_05 in thesis
+#P_test_range    = [5.1e-5, 0.89] # parameter range used for F_P in thesis
 P_test_ns       = 50              # number of parameter samples
 P_test_random   = False           # random parameter selction
 P_test_opt      = "log"           # discr. strategy for param.space: 
@@ -68,7 +82,6 @@ only_rbtesting  = False
 
 folder = str2pathstr(f"{os.path.dirname(__file__)}/"+\
          f"test_hgreedy/{test_problem}_{hf_initGuess_opt}_{solver_opt}/"+\
-        #f"test_hgreedy/20_amu5em5_orig_kleinerange_F_P_nleqerr/"+\
          f"P1_{P_1_discr_opt}{P_1_ns}")
 
 
@@ -99,8 +112,7 @@ if only_hf == False:
     if os.path.exists(stuff_folder):
         only_rbtesting = True
     if not only_rbtesting:
-        P_1_train       = get_P(P_train_range, P_1_discr_opt, P_1_ns)
-        greedy_htype(hf_problem, P_1_train, RB_tol, N_bar=RB_N_max,
+        greedy_htype(hf_problem, P_1_train, amu_1, RB_tol, N_bar=RB_N_max,
                             folder=stuff_folder, 
                             P_discr_opt=P_Bl_discr_opt) 
 
