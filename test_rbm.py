@@ -37,8 +37,8 @@ N_h             = 1000            # number of intervals in spat.discr.
 solver_opt      = "nleqerr"       # damping strategy : "ord", "nleqerr", "adaptDamp", "simplDamp"
 hf_Rtol         = 1/N_h**2        # tolerance for residual in NewtonSolver
 hf_maxit        = 100             # max. number of iterations for NewtonSolver
-hf_initGuess_opt = "P"              # initial Guess strategy : "P","0","0.5" or "LP"
-homotopie       = True 
+hf_initGuess_opt = "0.5"            # initial Guess strategy : "P","0","0.5" or "LP"
+homotopie       = False
 
 #------------------#
 ### rb: settings ###       
@@ -56,7 +56,7 @@ rb_initGuess_opt = hf_initGuess_opt # initial Guess strategy :
 # ----------
 P_train_range   = [2.e-5,1]       # parameter range
 #P_train_range   = [2e-5,8e-4]     # fourth branch
-P_train_ns      = 250              # number of parameter samples
+P_train_ns      = 50              # number of parameter samples
 P_train_random  = False           # random parameter selction
 P_train_opt     = "log"           # discr. strategy for param.space: 
                                   # log","decade_log","lin","decade","lin_n_log"
@@ -68,7 +68,7 @@ P_train = P_train[::-1]                                   #   "u_h", "P","0","0.
 
 # --- settings for constr. of RB --- #
 # ----------
-RB_opt          = "Greedy"        # RB generation : "POD_L2","POD_2","Greedy","htype_Greedy"
+RB_opt          = "POD_2"         # RB generation : "POD_L2","POD_2","Greedy","htype_Greedy"
 RB_tol          = 10/N_h**2       # tolerance for either POD or Greedy
 RB_N_max        = P_train_ns      # max. number of RB-functions
 
